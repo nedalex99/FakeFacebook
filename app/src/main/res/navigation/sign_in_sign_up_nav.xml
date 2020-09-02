@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sign_in_sign_un_nav"
+    app:startDestination="@id/signInFragment">
+
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.teme.fakefacebook.fragments.SignInFragment"
+        android:label="fragment_sign_in"
+        tools:layout="@layout/fragment_sign_in" >
+        <action
+            android:id="@+id/action_signInFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
+            app:destination="@id/forgotPasswordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.SignUpFragment"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_signUpFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_signUpFragment_to_firstLastNameFragment"
+            app:destination="@id/firstLastNameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.teme.fakefacebook.fragments.ForgotPasswordFragment"
+        android:label="fragment_forgot_password"
+        tools:layout="@layout/fragment_forgot_password" >
+        <action
+            android:id="@+id/action_forgotPasswordFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/firstLastNameFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.FirstLastNameFragment"
+        android:label="fragment_first_last_name"
+        tools:layout="@layout/fragment_first_last_name" >
+        <action
+            android:id="@+id/action_firstLastNameFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_firstLastNameFragment_to_dateOfBirthFragment"
+            app:destination="@id/dateOfBirthFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/dateOfBirthFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.DateOfBirthFragment"
+        android:label="fragment_date_of_birth"
+        tools:layout="@layout/fragment_date_of_birth" >
+        <action
+            android:id="@+id/action_dateOfBirthFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_dateOfBirthFragment_to_genderFragment"
+            app:destination="@id/genderFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/genderFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.GenderFragment"
+        android:label="fragment_gender"
+        tools:layout="@layout/fragment_gender" >
+        <action
+            android:id="@+id/action_genderFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_genderFragment_to_mobileNumberFragment"
+            app:destination="@id/mobileNumberFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mobileNumberFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.MobileNumberFragment"
+        android:label="fragment_mobile_number"
+        tools:layout="@layout/fragment_mobile_number" >
+        <action
+            android:id="@+id/action_mobileNumberFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_mobileNumberFragment_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
+        <action
+            android:id="@+id/action_mobileNumberFragment_to_emailAddressFragment"
+            app:destination="@id/emailAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.PasswordFragment"
+        android:label="fragment_password"
+        tools:layout="@layout/fragment_password" >
+        <action
+            android:id="@+id/action_passwordFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_passwordFragment_to_emailAddressFragment"
+            app:destination="@id/emailAddressFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/emailAddressFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.EmailAddressFragment"
+        android:label="fragment_email_address"
+        tools:layout="@layout/fragment_email_address" >
+        <action
+            android:id="@+id/action_emailAddressFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:popUpTo="@id/signUpFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_emailAddressFragment_to_termsPrivacyFragment"
+            app:destination="@id/termsPrivacyFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/termsPrivacyFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.TermsPrivacyFragment"
+        android:label="fragment_terms_privacy"
+        tools:layout="@layout/fragment_terms_privacy" />
+</navigation>

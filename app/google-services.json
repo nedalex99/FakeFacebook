@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "219678330927",
+    "firebase_url": "https://fakefacebook-a74f1.firebaseio.com",
+    "project_id": "fakefacebook-a74f1",
+    "storage_bucket": "fakefacebook-a74f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219678330927:android:7172bd2df8cd96c14176da",
+        "android_client_info": {
+          "package_name": "com.teme.fakefacebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "219678330927-qfan693vv1qh0oclqtohla0g85om3kji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCwIVz-1HHP0JJNvnzeB7ZpRBZgU7TMxGc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "219678330927-qfan693vv1qh0oclqtohla0g85om3kji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

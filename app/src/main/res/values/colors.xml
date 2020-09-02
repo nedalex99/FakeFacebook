@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#6200EE</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="textBlackColor">#000000</color>
+    <color name="textWhiteColor">#FFFFFF</color>
+
+    <color name="dark_gray">#a9a9a9</color>
+    <color name="blue">#1878f3</color>
+    <color name="blueForgotPass">#2e61bc</color>
+    <color name="green">#2da14c</color>
+
+    <!-- Buttons !-->
+    <color name="redFirstButton">#B20000</color>
+    <color name="blueSecondButton">#000666</color>
+    <color name="green1ThirdButton">#9DCF87</color>
+    <color name="green2ThirdButton">#6CA752</color>
+
+    <!-- Edit Texts + Text Views !-->
+    <color name="greenText">#9ACD32</color>
+    <color name="orangeText">#FFD700</color>
+
+    <!-- Color for launcher background !-->
+    <color name="ic_launcher_business_card_background">#9ACD32</color>
+
+    <color name="red">#ff0000</color>
+
+    <!-- Background color !-->
+    <color name="whiteBackground">#FFFFFF</color>
+    <color name="darkBlueBackgorund">#00008b</color>
+    <color name="skyBlueBackground">#87CEEB</color>
+    <color name="yellowBackground">#ffff00</color>
+    <color name="grayBackground">#767676</color>
+    <color name="orangeTextBackground">#dd3609</color>
+    <color name="orange_email_background">#dd2509</color>
+</resources>

@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">FakeFacebook</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="introduce_your_title">Introduce your title</string>
+    <string name="name_surname">John Doe</string>
+    <string name="phone_number">0712345689</string>
+    <string name="email_address">johndoe@anonymous.com</string>
+    <string name="go_to_second_activity">Go to Second Activity</string>
+
+    <string name="number">Phone Number</string>
+    <string name="send_number">Send Number</string>
+
+    <string name="dial_number">Dial Number</string>
+    <string name="message_number">Message Number</string>
+    <string name="go_to_sign_in">Go To Sign In</string>
+
+    <string name="sign_in">Sign In</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+</resources>
