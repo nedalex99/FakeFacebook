@@ -65,6 +65,9 @@
         <action
             android:id="@+id/action_dateOfBirthFragment_to_genderFragment"
             app:destination="@id/genderFragment" />
+        <argument
+            android:name="uuid"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/genderFragment"
@@ -79,6 +82,9 @@
         <action
             android:id="@+id/action_genderFragment_to_mobileNumberFragment"
             app:destination="@id/mobileNumberFragment" />
+        <argument
+            android:name="uuid"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/mobileNumberFragment"
@@ -96,6 +102,9 @@
         <action
             android:id="@+id/action_mobileNumberFragment_to_emailAddressFragment"
             app:destination="@id/emailAddressFragment" />
+        <argument
+            android:name="uuid"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
@@ -110,6 +119,9 @@
         <action
             android:id="@+id/action_passwordFragment_to_emailAddressFragment"
             app:destination="@id/emailAddressFragment" />
+        <argument
+            android:name="uuid"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/emailAddressFragment"
@@ -124,10 +136,20 @@
         <action
             android:id="@+id/action_emailAddressFragment_to_termsPrivacyFragment"
             app:destination="@id/termsPrivacyFragment" />
+        <argument
+            android:name="uuid"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/termsPrivacyFragment"
         android:name="com.teme.fakefacebook.fragments.signup.TermsPrivacyFragment"
         android:label="fragment_terms_privacy"
-        tools:layout="@layout/fragment_terms_privacy" />
+        tools:layout="@layout/fragment_terms_privacy" >
+        <argument
+            android:name="uuid"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_termsPrivacyFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+    </fragment>
 </navigation>

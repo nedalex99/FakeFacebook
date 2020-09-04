@@ -19,6 +19,7 @@ import java.util.*
 
 class FirstLastNameFragment : Fragment() {
 
+    private var uuid: String? = null
     private lateinit var database: DatabaseReference
 
     override fun onCreateView(
@@ -34,39 +35,77 @@ class FirstLastNameFragment : Fragment() {
 
         database = Firebase.database.reference
 
-        nextClick()
+        setupUI()
 
         firstNameTextChanged()
         lastNameTextChanged()
+    }
+
+    private fun setupUI() {
+        next_btn.setOnClickListener {
+            nextBtnClick()
+        }
 
         back_img.setOnClickListener {
-            activity?.let { it1 -> AlertDialog.Builder(it1) }?.apply {
-                setTitle("Do you want to stop creating your account?")
-                setMessage("If you stop nou, you'll lose any\n progress you've made.")
-                setPositiveButton("Stop Creating Account"
-                ) { _, _ ->
-                    view.findNavController()
-                        .navigate(R.id.action_firstLastNameFragment_to_signUpFragment)
-                }
-                setNegativeButton("Continue Creating Account"){_, _ ->
-                    setCancelable(true)
-                }
-            }?.create()?.show()
+            createAlertDialog()
         }
     }
 
-    private fun writeNewUser(userId: String) {
+    private fun nextBtnClick() {
+        when {
+            first_name_et.text!!.isEmpty() && last_name_et.text!!.isEmpty() -> {
+                showError("Your name is not correct")
+            }
+            checkName(last_name_et.text.toString()) && checkName(first_name_et.text.toString()) -> {
+                uuid = UUID.randomUUID().toString()
+                writeNewUser(uuid)
+                goToDateOfBirthFragment(uuid)
+                hideError()
+            }
+            !checkName(last_name_et.text.toString()) && !checkName(first_name_et.text.toString()) -> {
+                showError("Your name is not correct")
+            }
+            !checkName(last_name_et.text.toString()) -> {
+                showError("Your name is not correct")
+            }
+            !checkName(first_name_et.text.toString()) -> {
+                showError("Your name is not correct")
+            }
+        }
+    }
+
+    private fun createAlertDialog() {
+        activity?.let { it1 -> AlertDialog.Builder(it1) }?.apply {
+            setTitle("Do you want to stop creating your account?")
+            setMessage("If you stop nou, you'll lose any\n progress you've made.")
+            setPositiveButton(
+                "Stop Creating Account"
+            ) { _, _ ->
+                if (uuid != null) {
+                    deleteUser(uuid)
+                }
+                view?.findNavController()
+                    ?.navigate(R.id.action_firstLastNameFragment_to_signUpFragment)
+            }
+            setNegativeButton("Continue Creating Account") { _, _ ->
+                setCancelable(true)
+            }
+        }?.create()?.show()
+    }
+
+    private fun deleteUser(uuid: String?) {
+        database.child("users").child(uuid.toString()).setValue(null)
+    }
+
+    private fun writeNewUser(uuid: String?) {
         val user =
             Name(firstName = first_name_et.text.toString(), lastName = last_name_et.text.toString())
-        val aid = database.push().key.toString()
-        database.child("users").child("name").child(UUID.randomUUID().toString()).setValue(user)
+        database.child("users").child(uuid.toString()).child("name").setValue(user)
     }
 
     private fun firstNameTextChanged() {
-        var textOk = true
         first_name_et.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -74,14 +113,11 @@ class FirstLastNameFragment : Fragment() {
                     if (s.isNotEmpty()) {
                         if (!checkName(s.toString())) {
                             showError("Your name is not correct")
-                            //textOk = true
                         } else {
                             hideError()
-                            //textOk = false
                         }
                     } else {
                         hideError()
-                        //textOk = false
                     }
                 }
             }
@@ -93,10 +129,8 @@ class FirstLastNameFragment : Fragment() {
     }
 
     private fun lastNameTextChanged() {
-        var textOk = true
         last_name_et.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
@@ -104,14 +138,11 @@ class FirstLastNameFragment : Fragment() {
                     if (s.isNotEmpty()) {
                         if (!checkName(s.toString())) {
                             showError("Your name is not correct")
-                            //textOk = true
                         } else {
                             hideError()
-                            //textOk = false
                         }
                     } else {
                         hideError()
-                        //textOk = false
                     }
                 }
             }
@@ -122,30 +153,11 @@ class FirstLastNameFragment : Fragment() {
         })
     }
 
-    private fun nextClick() {
-        next_btn.setOnClickListener {
-            when {
-                first_name_et.text!!.isEmpty() && last_name_et.text!!.isEmpty() -> {
-                    showError("Your name is not correct")
-                }
-                checkName(last_name_et.text.toString()) && checkName(first_name_et.text.toString()) -> {
-                    writeNewUser("4")
-                    view?.findNavController()
-                        ?.navigate(R.id.action_firstLastNameFragment_to_dateOfBirthFragment)
-                    hideError()
-                }
-                !checkName(last_name_et.text.toString()) && !checkName(first_name_et.text.toString()) -> {
-                    showError("Your name is not correct")
-
-                }
-                !checkName(last_name_et.text.toString()) -> {
-                    showError("Your name is not correct")
-                }
-                !checkName(first_name_et.text.toString()) -> {
-                    showError("Your name is not correct")
-                }
-            }
-        }
+    private fun goToDateOfBirthFragment(uuid: String?) {
+        val action = FirstLastNameFragmentDirections
+            .actionFirstLastNameFragmentToDateOfBirthFragment(uuid = uuid.toString())
+        view?.findNavController()
+            ?.navigate(action)
     }
 
 
