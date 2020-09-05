@@ -11,7 +11,6 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.teme.fakefacebook.R
-import kotlinx.android.synthetic.main.fragment_mobile_number.*
 import kotlinx.android.synthetic.main.fragment_password.*
 import kotlinx.android.synthetic.main.fragment_password.back_img
 import kotlinx.android.synthetic.main.fragment_password.next_btn
@@ -42,8 +41,13 @@ class PasswordFragment : Fragment() {
 
     private fun setupUI() {
         next_btn.setOnClickListener {
-            uuid?.let { it1 -> addPasswordToUser(it1) }
-            goToEmailFragment()
+            if (password_et.text.isEmpty()) {
+                showError()
+            } else {
+                hideError()
+                uuid?.let { it1 -> addPasswordToUser(it1) }
+                goToEmailFragment()
+            }
         }
 
         back_img.setOnClickListener {
@@ -85,6 +89,16 @@ class PasswordFragment : Fragment() {
 
     private fun deleteUser(uuid: String?) {
         database.child("users").child(uuid.toString()).setValue(null)
+    }
+
+    private fun showError() {
+        error.error = true.toString()
+        error.visibility = View.VISIBLE
+    }
+
+    private fun hideError() {
+        error.error = null
+        error.visibility = View.GONE
     }
 
     private fun getUUID(): String? {

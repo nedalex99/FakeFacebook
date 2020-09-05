@@ -1,18 +1,24 @@
 package com.teme.fakefacebook.fragments.signup
 
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.teme.fakefacebook.R
+import kotlinx.android.synthetic.main.fragment_first_last_name.*
 import kotlinx.android.synthetic.main.fragment_gender.*
 import kotlinx.android.synthetic.main.fragment_gender.back_img
+import kotlinx.android.synthetic.main.fragment_gender.error
+import kotlinx.android.synthetic.main.fragment_gender.next_btn
 
 class GenderFragment : Fragment() {
 
@@ -41,11 +47,18 @@ class GenderFragment : Fragment() {
 
     private fun setupUI() {
         next_btn.setOnClickListener {
-            uuid?.let { addGenderToUser(it) }
-            goToMobileNumberFragment()
+            if (radio_group.checkedRadioButtonId == -1) {
+                showError()
+                //Toast.makeText(context, "Please, select a gender!", Toast.LENGTH_SHORT).show()
+            } else {
+                uuid?.let { addGenderToUser(it) }
+                goToMobileNumberFragment()
+            }
         }
 
+
         radio_group.setOnCheckedChangeListener { group, checkedId ->
+            hideError()
             gender = if (checkedId == R.id.male) {
                 male.text.toString()
             } else {
@@ -92,6 +105,22 @@ class GenderFragment : Fragment() {
 
     private fun deleteUser(uuid: String?) {
         database.child("users").child(uuid.toString()).setValue(null)
+    }
+
+    private fun showError() {
+        female.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+        male.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
+        error.error = true.toString()
+        change_tv.visibility = View.GONE
+        error.visibility = View.VISIBLE
+    }
+
+    private fun hideError() {
+        female.setTextColor(ContextCompat.getColor(requireContext(), R.color.textBlackColor))
+        male.setTextColor(ContextCompat.getColor(requireContext(), R.color.textBlackColor))
+        error.error = null
+        change_tv.visibility = View.VISIBLE
+        error.visibility = View.GONE
     }
 
     private fun getUUID(): String? {

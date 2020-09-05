@@ -1,10 +1,12 @@
 package com.teme.fakefacebook.fragments.signup
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import com.google.firebase.database.DatabaseReference
@@ -12,10 +14,11 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.teme.fakefacebook.R
 import com.teme.fakefacebook.models.BirthDate
-import com.teme.fakefacebook.models.Name
 import kotlinx.android.synthetic.main.fragment_date_of_birth.*
 import kotlinx.android.synthetic.main.fragment_date_of_birth.back_img
+import kotlinx.android.synthetic.main.fragment_date_of_birth.error
 import kotlinx.android.synthetic.main.fragment_first_last_name.*
+import java.time.LocalDateTime
 
 
 class DateOfBirthFragment : Fragment() {
@@ -43,13 +46,33 @@ class DateOfBirthFragment : Fragment() {
 
     private fun setupUI() {
         choose_date_btn.setOnClickListener {
-            uuid?.let { it1 -> addBirthDateToUser(it1) }
-            goToGenderFragment()
+            if (!checkYearChosen()) {
+                showError()
+                /*Toast.makeText(
+                    context,
+                    "You are too young to have a Facebook account!",
+                    Toast.LENGTH_LONG
+                ).show()*/
+            } else {
+                hideError()
+                uuid?.let { it1 -> addBirthDateToUser(it1) }
+                goToGenderFragment()
+            }
         }
 
         back_img.setOnClickListener {
             createAlertDialog()
         }
+    }
+
+    private fun checkYearChosen(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val currentDate = LocalDateTime.now()
+            if (currentDate.year - date_picker.year < 5) {
+                return false
+            }
+        }
+        return true
     }
 
     private fun goToGenderFragment() {
@@ -87,6 +110,16 @@ class DateOfBirthFragment : Fragment() {
 
     private fun deleteUser(uuid: String?) {
         database.child("users").child(uuid.toString()).setValue(null)
+    }
+
+    private fun showError() {
+        error.error = true.toString()
+        error.visibility = View.VISIBLE
+    }
+
+    private fun hideError() {
+        error.error = null
+        error.visibility = View.GONE
     }
 
     private fun getUUID(): String? {

@@ -68,22 +68,52 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/appbar_layout" />
 
-        <TextView
-            android:id="@+id/change_tv"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/error_text_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_marginEnd="10dp"
-            android:gravity="center"
-            android:text="You can change who sees your gender on your profile later"
-            android:textAllCaps="false"
-            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/what_gender_tv" />
+            app:layout_constraintTop_toBottomOf="@id/what_gender_tv">
+
+            <TextView
+                android:id="@+id/change_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:text="You can change who sees your gender on your profile later"
+                android:textAllCaps="false"
+                android:textSize="16sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/error"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:gravity="center"
+                android:text="Please select your gender."
+                android:textColor="@color/red"
+                android:textSize="16sp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:id="@+id/radio_linear_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_side_25"
@@ -92,7 +122,7 @@
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/change_tv">
+            app:layout_constraintTop_toBottomOf="@id/error_text_layout">
 
             <RadioGroup
                 android:id="@+id/radio_group"
@@ -102,15 +132,23 @@
 
                 <RadioButton
                     android:id="@+id/female"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Female" />
+                    android:layout_gravity="start"
+                    android:layoutDirection="rtl"
+                    android:text="Female"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/textBlackColor" />
 
                 <RadioButton
                     android:id="@+id/male"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Male" />
+                    android:layout_gravity="start"
+                    android:layoutDirection="rtl"
+                    android:text="Male"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/textBlackColor" />
 
             </RadioGroup>
 

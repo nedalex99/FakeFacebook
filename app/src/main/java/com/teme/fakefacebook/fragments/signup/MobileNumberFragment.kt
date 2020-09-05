@@ -1,17 +1,20 @@
 package com.teme.fakefacebook.fragments.signup
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.teme.fakefacebook.R
-import kotlinx.android.synthetic.main.fragment_first_last_name.*
 import kotlinx.android.synthetic.main.fragment_mobile_number.*
 import kotlinx.android.synthetic.main.fragment_mobile_number.back_img
 import kotlinx.android.synthetic.main.fragment_mobile_number.next_btn
@@ -37,14 +40,39 @@ class MobileNumberFragment : Fragment() {
         uuid = getUUID()
 
         setupUI()
+
+        mobileNumberTextChanged()
+    }
+
+    private fun mobileNumberTextChanged() {
+        mobile_number_et.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                s?.let {
+                    if (s.isNotEmpty()) {
+                        hideError()
+                    }
+                }
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+            }
+        })
     }
 
     private fun setupUI() {
         next_btn.setOnClickListener {
-            uuid?.let {
-                addMobileNumberToUser(it)
+            if (mobile_number_et.text.isEmpty()) {
+                showError()
+                //Toast.makeText(context, "Please, insert a mobile number!", Toast.LENGTH_LONG).show()
+            } else {
+                uuid?.let {
+                    addMobileNumberToUser(it)
+                }
+                goToPasswordFragment()
             }
-            goToPasswordFragment()
         }
 
         sign_up_email_tv.setOnClickListener {
@@ -100,6 +128,17 @@ class MobileNumberFragment : Fragment() {
 
     private fun deleteUser(uuid: String?) {
         database.child("users").child(uuid.toString()).setValue(null)
+    }
+
+    private fun showError() {
+        error.error = true.toString()
+        error.visibility = View.VISIBLE
+    }
+
+    private fun hideError() {
+
+        error.error = null
+        error.visibility = View.GONE
     }
 
     private fun getUUID(): String? {

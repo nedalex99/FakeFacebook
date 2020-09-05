@@ -12,7 +12,10 @@
         tools:layout="@layout/fragment_sign_in" >
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
-            app:destination="@id/signUpFragment" />
+            app:destination="@id/signUpFragment"
+            app:enterAnim="@anim/slide_up"
+            app:exitAnim="@anim/slide_down"
+            app:popEnterAnim="@anim/slide_up" />
         <action
             android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
@@ -24,10 +27,16 @@
         tools:layout="@layout/fragment_sign_up" >
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/sign_in_sign_un_nav"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_signUpFragment_to_firstLastNameFragment"
-            app:destination="@id/firstLastNameFragment" />
+            app:destination="@id/firstLastNameFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -50,7 +59,11 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_firstLastNameFragment_to_dateOfBirthFragment"
-            app:destination="@id/dateOfBirthFragment" />
+            app:destination="@id/dateOfBirthFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/dateOfBirthFragment"
@@ -64,7 +77,11 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_dateOfBirthFragment_to_genderFragment"
-            app:destination="@id/genderFragment" />
+            app:destination="@id/genderFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <argument
             android:name="uuid"
             app:argType="string" />
@@ -81,7 +98,11 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_genderFragment_to_mobileNumberFragment"
-            app:destination="@id/mobileNumberFragment" />
+            app:destination="@id/mobileNumberFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <argument
             android:name="uuid"
             app:argType="string" />
@@ -98,10 +119,18 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_mobileNumberFragment_to_passwordFragment"
-            app:destination="@id/passwordFragment" />
+            app:destination="@id/passwordFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <action
             android:id="@+id/action_mobileNumberFragment_to_emailAddressFragment"
-            app:destination="@id/emailAddressFragment" />
+            app:destination="@id/emailAddressFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <argument
             android:name="uuid"
             app:argType="string" />
@@ -118,7 +147,11 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_passwordFragment_to_emailAddressFragment"
-            app:destination="@id/emailAddressFragment" />
+            app:destination="@id/emailAddressFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <argument
             android:name="uuid"
             app:argType="string" />
@@ -135,7 +168,11 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_emailAddressFragment_to_termsPrivacyFragment"
-            app:destination="@id/termsPrivacyFragment" />
+            app:destination="@id/termsPrivacyFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popEnterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
         <argument
             android:name="uuid"
             app:argType="string" />
