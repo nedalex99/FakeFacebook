@@ -7,12 +7,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.teme.fakefacebook.R
 import kotlinx.android.synthetic.main.fragment_mobile_number.*
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_mobile_number.next_btn
 
 class MobileNumberFragment : Fragment() {
 
-    private var uuid: String? = null
+    private var userId: String? = null
     private lateinit var database: DatabaseReference
 
     override fun onCreateView(
@@ -37,7 +36,7 @@ class MobileNumberFragment : Fragment() {
 
         database = Firebase.database.reference
 
-        uuid = getUUID()
+        userId = getUserId()
 
         setupUI()
 
@@ -68,7 +67,7 @@ class MobileNumberFragment : Fragment() {
                 showError()
                 //Toast.makeText(context, "Please, insert a mobile number!", Toast.LENGTH_LONG).show()
             } else {
-                uuid?.let {
+                userId?.let {
                     addMobileNumberToUser(it)
                 }
                 goToPasswordFragment()
@@ -85,8 +84,8 @@ class MobileNumberFragment : Fragment() {
     }
 
     private fun goToPasswordFragment() {
-        val action = uuid?.let { it1 ->
-            MobileNumberFragmentDirections.actionMobileNumberFragmentToPasswordFragment(uuid = it1)
+        val action = userId?.let { it1 ->
+            MobileNumberFragmentDirections.actionMobileNumberFragmentToPasswordFragment(userId = it1)
         }
         action?.let { it1 ->
             view?.findNavController()?.navigate(it1)
@@ -94,8 +93,8 @@ class MobileNumberFragment : Fragment() {
     }
 
     private fun goToEmailFragment() {
-        val action = uuid?.let { it1 ->
-            MobileNumberFragmentDirections.actionMobileNumberFragmentToEmailAddressFragment(uuid = it1)
+        val action = userId?.let { it1 ->
+            MobileNumberFragmentDirections.actionMobileNumberFragmentToEmailAddressFragment(userId = it1)
         }
         action?.let { it1 ->
             view?.findNavController()?.navigate(it1)
@@ -109,11 +108,11 @@ class MobileNumberFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (uuid != null) {
-                    deleteUser(uuid)
+                if (userId != null) {
+                    deleteUser(userId)
                 }
                 view?.findNavController()
-                    ?.navigate(R.id.action_mobileNumberFragment_to_signUpFragment)
+                    ?.navigate(R.id.action_mobileNumberFragment_to_signInFragment)
             }
             setNegativeButton("Continue Creating Account") { _, _ ->
                 setCancelable(true)
@@ -121,13 +120,22 @@ class MobileNumberFragment : Fragment() {
         }?.create()?.show()
     }
 
-    private fun addMobileNumberToUser(uuid: String) {
-        database.child("users").child(uuid).child("mobileNumber")
-            .setValue(mobile_number_et.text.toString())
+    private fun addMobileNumberToUser(userId: String?) {
+        userId?.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .update("mobileNumber", mobile_number_et.text.toString())
+        }
     }
 
-    private fun deleteUser(uuid: String?) {
-        database.child("users").child(uuid.toString()).setValue(null)
+    private fun deleteUser(userId: String?) {
+        userId?.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .delete()
+        }
     }
 
     private fun showError() {
@@ -141,10 +149,10 @@ class MobileNumberFragment : Fragment() {
         error.visibility = View.GONE
     }
 
-    private fun getUUID(): String? {
+    private fun getUserId(): String? {
         arguments?.let {
             val args = GenderFragmentArgs.fromBundle(requireArguments())
-            return args.uuid
+            return args.userId
         }
         return null
     }

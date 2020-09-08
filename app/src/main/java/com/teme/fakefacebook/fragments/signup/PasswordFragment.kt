@@ -7,8 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ktx.database
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.teme.fakefacebook.R
 import kotlinx.android.synthetic.main.fragment_password.*
@@ -18,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_password.next_btn
 
 class PasswordFragment : Fragment() {
 
-    private var uuid: String? = null
+    private var userId: String? = null
     private lateinit var database: DatabaseReference
 
     override fun onCreateView(
@@ -34,7 +36,7 @@ class PasswordFragment : Fragment() {
 
         database = Firebase.database.reference
 
-        uuid = getUUID()
+        userId = getUserId()
 
         setupUI()
     }
@@ -45,7 +47,7 @@ class PasswordFragment : Fragment() {
                 showError()
             } else {
                 hideError()
-                uuid?.let { it1 -> addPasswordToUser(it1) }
+                userId?.let { it1 -> addPasswordToUser(it1) }
                 goToEmailFragment()
             }
         }
@@ -56,8 +58,8 @@ class PasswordFragment : Fragment() {
     }
 
     private fun goToEmailFragment() {
-        val action = uuid?.let { it1 ->
-            PasswordFragmentDirections.actionPasswordFragmentToEmailAddressFragment(uuid = it1)
+        val action = userId?.let { it1 ->
+            PasswordFragmentDirections.actionPasswordFragmentToEmailAddressFragment(userId = it1)
         }
         action?.let { it1 ->
             view?.findNavController()?.navigate(it1)
@@ -71,11 +73,11 @@ class PasswordFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (uuid != null) {
-                    deleteUser(uuid)
+                if (userId != null) {
+                    deleteUser(userId)
                 }
                 view?.findNavController()
-                    ?.navigate(R.id.action_passwordFragment_to_signUpFragment)
+                    ?.navigate(R.id.action_passwordFragment_to_signInFragment)
             }
             setNegativeButton("Continue Creating Account") { _, _ ->
                 setCancelable(true)
@@ -83,12 +85,22 @@ class PasswordFragment : Fragment() {
         }?.create()?.show()
     }
 
-    private fun addPasswordToUser(uuid: String) {
-        database.child("users").child(uuid).child("password").setValue(password_et.text.toString())
+    private fun addPasswordToUser(userId: String?) {
+        userId?.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .update("password", password_et.text.toString())
+        }
     }
 
-    private fun deleteUser(uuid: String?) {
-        database.child("users").child(uuid.toString()).setValue(null)
+    private fun deleteUser(userId: String?) {
+        userId?.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .delete()
+        }
     }
 
     private fun showError() {
@@ -101,10 +113,10 @@ class PasswordFragment : Fragment() {
         error.visibility = View.GONE
     }
 
-    private fun getUUID(): String? {
+    private fun getUserId(): String? {
         arguments?.let {
             val args = GenderFragmentArgs.fromBundle(requireArguments())
-            return args.uuid
+            return args.userId
         }
         return null
     }

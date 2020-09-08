@@ -7,19 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
 import kotlinx.android.synthetic.main.fragment_email_address.*
 import kotlinx.android.synthetic.main.fragment_email_address.back_img
 import kotlinx.android.synthetic.main.fragment_email_address.next_btn
-import kotlinx.android.synthetic.main.fragment_mobile_number.*
 
 class EmailAddressFragment : Fragment() {
 
-    private var uuid: String? = null
-    private lateinit var database: DatabaseReference
+    private var userId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,9 +28,7 @@ class EmailAddressFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        database = Firebase.database.reference
-
-        uuid = getUUID()
+        userId = getUserId()
 
         setupUI()
     }
@@ -42,12 +36,12 @@ class EmailAddressFragment : Fragment() {
 
     private fun setupUI() {
         next_btn.setOnClickListener {
-            addEmailAddressToUser(uuid)
+            userId?.let { it1 -> addEmailAddressToUser(it1) }
             goToTermsFragment()
         }
 
         skip_tv.setOnClickListener {
-            addEmailAddressToUser(uuid)
+            userId?.let { it1 -> addEmailAddressToUser(it1) }
             goToTermsFragment()
         }
 
@@ -57,8 +51,8 @@ class EmailAddressFragment : Fragment() {
     }
 
     private fun goToTermsFragment() {
-        val action = uuid?.let { it1 ->
-            EmailAddressFragmentDirections.actionEmailAddressFragmentToTermsPrivacyFragment(uuid = it1)
+        val action = userId?.let { it1 ->
+            EmailAddressFragmentDirections.actionEmailAddressFragmentToTermsPrivacyFragment(userId = it1)
         }
         action?.let { it1 ->
             view?.findNavController()
@@ -73,11 +67,11 @@ class EmailAddressFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (uuid != null) {
-                    deleteUser(uuid)
+                if (userId != null) {
+                    deleteUser(userId)
                 }
                 view?.findNavController()
-                    ?.navigate(R.id.action_emailAddressFragment_to_signUpFragment)
+                    ?.navigate(R.id.action_emailAddressFragment_to_signInFragment)
             }
             setNegativeButton("Continue Creating Account") { _, _ ->
                 setCancelable(true)
@@ -85,21 +79,26 @@ class EmailAddressFragment : Fragment() {
         }?.create()?.show()
     }
 
-    private fun addEmailAddressToUser(uuid: String?) {
-        uuid?.let {
-            database.child("users").child(it).child("email")
-                .setValue(email_et.text.toString())
+    private fun addEmailAddressToUser(userId: String) {
+        userId.let {
+            FirebaseFirestore.getInstance().collection("users").document(it)
+                .update("email", email_et.text.toString())
         }
     }
 
-    private fun deleteUser(uuid: String?) {
-        database.child("users").child(uuid.toString()).setValue(null)
+    private fun deleteUser(userId: String?) {
+        userId?.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .delete()
+        }
     }
 
-    private fun getUUID(): String? {
+    private fun getUserId(): String? {
         arguments?.let {
             val args = GenderFragmentArgs.fromBundle(requireArguments())
-            return args.uuid
+            return args.userId
         }
         return null
     }

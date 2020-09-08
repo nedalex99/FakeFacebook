@@ -38,8 +38,12 @@ dependencies {
         //Auth
     implementation 'com.google.firebase:firebase-auth:19.3.2'
     implementation 'com.google.android.gms:play-services-auth:18.1.0'
+    implementation 'com.firebaseui:firebase-ui-auth:6.2.0'
 
-        //Realtime Database
+    //Firestore
+    implementation 'com.google.firebase:firebase-firestore-ktx:21.6.0'
+
+    //Realtime Database
     implementation 'com.google.firebase:firebase-database-ktx:19.4.0'
 
     //Circle Image View

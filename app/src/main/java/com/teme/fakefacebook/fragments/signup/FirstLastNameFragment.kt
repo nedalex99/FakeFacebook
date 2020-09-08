@@ -9,18 +9,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
 import com.teme.fakefacebook.models.Name
 import kotlinx.android.synthetic.main.fragment_first_last_name.*
-import java.util.*
 
 class FirstLastNameFragment : Fragment() {
 
-    private var uuid: String? = null
-    private lateinit var database: DatabaseReference
+    private var userId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,8 +28,6 @@ class FirstLastNameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        database = Firebase.database.reference
 
         setupUI()
 
@@ -57,9 +51,11 @@ class FirstLastNameFragment : Fragment() {
                 showError("Your name is not correct")
             }
             checkName(last_name_et.text.toString()) && checkName(first_name_et.text.toString()) -> {
-                uuid = UUID.randomUUID().toString()
-                writeNewUser(uuid)
-                goToDateOfBirthFragment(uuid)
+                userId = FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document().id
+                writeNewUser(userId)
+                goToDateOfBirthFragment(userId)
                 hideError()
             }
             !checkName(last_name_et.text.toString()) && !checkName(first_name_et.text.toString()) -> {
@@ -81,11 +77,11 @@ class FirstLastNameFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (uuid != null) {
-                    deleteUser(uuid)
+                if (userId != null) {
+                    deleteUser(userId)
                 }
                 view?.findNavController()
-                    ?.navigate(R.id.action_firstLastNameFragment_to_signUpFragment)
+                    ?.navigate(R.id.action_firstLastNameFragment_to_signInFragment)
             }
             setNegativeButton("Continue Creating Account") { _, _ ->
                 setCancelable(true)
@@ -93,14 +89,25 @@ class FirstLastNameFragment : Fragment() {
         }?.create()?.show()
     }
 
-    private fun deleteUser(uuid: String?) {
-        database.child("users").child(uuid.toString()).setValue(null)
+    private fun deleteUser(userId: String?) {
+        userId?.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .delete()
+        }
     }
 
-    private fun writeNewUser(uuid: String?) {
-        val user =
+    private fun writeNewUser(userId: String?) {
+        val name =
             Name(firstName = first_name_et.text.toString(), lastName = last_name_et.text.toString())
-        database.child("users").child(uuid.toString()).child("name").setValue(user)
+
+        userId?.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .set(name)
+        }
     }
 
     private fun firstNameTextChanged() {
@@ -155,7 +162,7 @@ class FirstLastNameFragment : Fragment() {
 
     private fun goToDateOfBirthFragment(uuid: String?) {
         val action = FirstLastNameFragmentDirections
-            .actionFirstLastNameFragmentToDateOfBirthFragment(uuid = uuid.toString())
+            .actionFirstLastNameFragmentToDateOfBirthFragment(userId = uuid.toString())
         view?.findNavController()
             ?.navigate(action)
     }

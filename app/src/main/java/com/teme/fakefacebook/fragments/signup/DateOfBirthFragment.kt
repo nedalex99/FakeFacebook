@@ -6,25 +6,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
 import com.teme.fakefacebook.models.BirthDate
 import kotlinx.android.synthetic.main.fragment_date_of_birth.*
 import kotlinx.android.synthetic.main.fragment_date_of_birth.back_img
 import kotlinx.android.synthetic.main.fragment_date_of_birth.error
-import kotlinx.android.synthetic.main.fragment_first_last_name.*
 import java.time.LocalDateTime
 
 
 class DateOfBirthFragment : Fragment() {
 
-    private var uuid: String? = null
-    private lateinit var database: DatabaseReference
+    private var userId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,9 +32,7 @@ class DateOfBirthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        database = Firebase.database.reference
-
-        uuid = getUUID()
+        userId = getUserId()
 
         setupUI()
     }
@@ -55,7 +48,7 @@ class DateOfBirthFragment : Fragment() {
                 ).show()*/
             } else {
                 hideError()
-                uuid?.let { it1 -> addBirthDateToUser(it1) }
+                userId?.let { it1 -> addBirthDateToUser(it1) }
                 goToGenderFragment()
             }
         }
@@ -76,8 +69,8 @@ class DateOfBirthFragment : Fragment() {
     }
 
     private fun goToGenderFragment() {
-        val action = uuid?.let { it1 ->
-            DateOfBirthFragmentDirections.actionDateOfBirthFragmentToGenderFragment(uuid = it1)
+        val action = userId?.let { it1 ->
+            DateOfBirthFragmentDirections.actionDateOfBirthFragmentToGenderFragment(userId = it1)
         }
         if (action != null) {
             view?.findNavController()?.navigate(action)
@@ -91,11 +84,11 @@ class DateOfBirthFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (uuid != null) {
-                    deleteUser(uuid)
+                if (userId != null) {
+                    deleteUser(userId)
                 }
                 view?.findNavController()
-                    ?.navigate(R.id.action_dateOfBirthFragment_to_signUpFragment)
+                    ?.navigate(R.id.action_dateOfBirthFragment_to_signInFragment)
             }
             setNegativeButton("Continue Creating Account") { _, _ ->
                 setCancelable(true)
@@ -103,14 +96,26 @@ class DateOfBirthFragment : Fragment() {
         }?.create()?.show()
     }
 
-    private fun addBirthDateToUser(uuid: String) {
+    private fun addBirthDateToUser(userId: String) {
         val birthDate = BirthDate(date_picker.year, date_picker.month, date_picker.dayOfMonth)
-        database.child("users").child(uuid).child("birthDate").setValue(birthDate)
+
+        userId.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .update("birthdate", birthDate)
+        }
+
+        //database.child("users").child(uuid).child("birthDate").setValue(birthDate)
     }
 
-    private fun deleteUser(uuid: String?) {
-        database.child("users").child(uuid.toString()).setValue(null)
-    }
+    private fun deleteUser(userId: String?) {
+        userId?.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .delete()
+        }    }
 
     private fun showError() {
         error.error = true.toString()
@@ -122,10 +127,10 @@ class DateOfBirthFragment : Fragment() {
         error.visibility = View.GONE
     }
 
-    private fun getUUID(): String? {
+    private fun getUserId(): String? {
         arguments?.let {
             val args = DateOfBirthFragmentArgs.fromBundle(requireArguments())
-            return args.uuid
+            return args.userId
         }
         return null
     }

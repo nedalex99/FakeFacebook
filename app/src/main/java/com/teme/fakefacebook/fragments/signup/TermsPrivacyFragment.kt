@@ -7,16 +7,17 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
 import kotlinx.android.synthetic.main.fragment_email_address.*
+import kotlinx.android.synthetic.main.fragment_email_address.back_img
+import kotlinx.android.synthetic.main.fragment_password.*
+import kotlinx.android.synthetic.main.fragment_terms_privacy.*
 
 class TermsPrivacyFragment : Fragment() {
 
-    private var uuid: String? = null
-    private lateinit var database: DatabaseReference
+    private var userId: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,9 +30,7 @@ class TermsPrivacyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        database = Firebase.database.reference
-
-        uuid = getUUID()
+        userId = getUserId()
 
         setupUI()
     }
@@ -39,6 +38,12 @@ class TermsPrivacyFragment : Fragment() {
     private fun setupUI() {
         back_img.setOnClickListener {
             createAlertDialog()
+        }
+
+        sign_up_btn.setOnClickListener {
+            val email = email_et.text.toString()
+            val pass = password_et.text.toString()
+            FirebaseAuth.getInstance().createUserWithEmailAndPassword(email_et.text.toString(), password_et.text.toString())
         }
     }
 
@@ -49,11 +54,11 @@ class TermsPrivacyFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (uuid != null) {
-                    deleteUser(uuid)
+                if (userId != null) {
+                    deleteUser(userId)
                 }
                 view?.findNavController()
-                    ?.navigate(R.id.action_termsPrivacyFragment_to_signUpFragment)
+                    ?.navigate(R.id.action_termsPrivacyFragment_to_signInFragment)
             }
             setNegativeButton("Continue Creating Account") { _, _ ->
                 setCancelable(true)
@@ -61,14 +66,18 @@ class TermsPrivacyFragment : Fragment() {
         }?.create()?.show()
     }
 
-    private fun deleteUser(uuid: String?) {
-        database.child("users").child(uuid.toString()).setValue(null)
-    }
+    private fun deleteUser(userId: String?) {
+        userId?.let {
+            FirebaseFirestore.getInstance()
+                .collection("users")
+                .document(it)
+                .delete()
+        }    }
 
-    private fun getUUID(): String? {
+    private fun getUserId(): String? {
         arguments?.let {
             val args = TermsPrivacyFragmentArgs.fromBundle(requireArguments())
-            return args.uuid
+            return args.userId
         }
         return null
     }
