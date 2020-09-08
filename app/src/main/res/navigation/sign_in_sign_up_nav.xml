@@ -9,7 +9,7 @@
         android:id="@+id/signInFragment"
         android:name="com.teme.fakefacebook.fragments.SignInFragment"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_in" >
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"
@@ -24,7 +24,7 @@
         android:id="@+id/signUpFragment"
         android:name="com.teme.fakefacebook.fragments.signup.SignUpFragment"
         android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_up" >
+        tools:layout="@layout/fragment_sign_up">
         <action
             android:id="@+id/action_signUpFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -46,7 +46,7 @@
         android:id="@+id/forgotPasswordFragment"
         android:name="com.teme.fakefacebook.fragments.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
-        tools:layout="@layout/fragment_forgot_password" >
+        tools:layout="@layout/fragment_forgot_password">
         <action
             android:id="@+id/action_forgotPasswordFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
@@ -55,7 +55,7 @@
         android:id="@+id/firstLastNameFragment"
         android:name="com.teme.fakefacebook.fragments.signup.FirstLastNameFragment"
         android:label="fragment_first_last_name"
-        tools:layout="@layout/fragment_first_last_name" >
+        tools:layout="@layout/fragment_first_last_name">
         <action
             android:id="@+id/action_firstLastNameFragment_to_dateOfBirthFragment"
             app:destination="@id/dateOfBirthFragment"
@@ -77,7 +77,7 @@
         android:id="@+id/dateOfBirthFragment"
         android:name="com.teme.fakefacebook.fragments.signup.DateOfBirthFragment"
         android:label="fragment_date_of_birth"
-        tools:layout="@layout/fragment_date_of_birth" >
+        tools:layout="@layout/fragment_date_of_birth">
         <action
             android:id="@+id/action_dateOfBirthFragment_to_genderFragment"
             app:destination="@id/genderFragment"
@@ -86,7 +86,10 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <argument
-            android:name="userId"
+            android:name="firstName"
+            app:argType="string" />
+        <argument
+            android:name="lastName"
             app:argType="string" />
         <action
             android:id="@+id/action_dateOfBirthFragment_to_signInFragment"
@@ -102,7 +105,7 @@
         android:id="@+id/genderFragment"
         android:name="com.teme.fakefacebook.fragments.signup.GenderFragment"
         android:label="fragment_gender"
-        tools:layout="@layout/fragment_gender" >
+        tools:layout="@layout/fragment_gender">
         <action
             android:id="@+id/action_genderFragment_to_mobileNumberFragment"
             app:destination="@id/mobileNumberFragment"
@@ -111,7 +114,19 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <argument
-            android:name="userId"
+            android:name="firstName"
+            app:argType="string" />
+        <argument
+            android:name="lastName"
+            app:argType="string" />
+        <argument
+            android:name="day"
+            app:argType="string" />
+        <argument
+            android:name="month"
+            app:argType="string" />
+        <argument
+            android:name="year"
             app:argType="string" />
         <action
             android:id="@+id/action_genderFragment_to_signInFragment"
@@ -127,24 +142,50 @@
         android:id="@+id/mobileNumberFragment"
         android:name="com.teme.fakefacebook.fragments.signup.MobileNumberFragment"
         android:label="fragment_mobile_number"
-        tools:layout="@layout/fragment_mobile_number" >
+        tools:layout="@layout/fragment_mobile_number">
+
+        <argument
+            android:name="firstName"
+            app:argType="string" />
+        <argument
+            android:name="lastName"
+            app:argType="string" />
+        <argument
+            android:name="day"
+            app:argType="string" />
+        <argument
+            android:name="month"
+            app:argType="string" />
+        <argument
+            android:name="year"
+            app:argType="string" />
+        <argument
+            android:name="gender"
+            app:argType="string" />
         <action
             android:id="@+id/action_mobileNumberFragment_to_passwordFragment"
             app:destination="@id/passwordFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            app:popExitAnim="@anim/fade_out">
+            <argument
+                android:name="email"
+                android:defaultValue="@null"
+                app:nullable="true" />
+        </action>
         <action
             android:id="@+id/action_mobileNumberFragment_to_emailAddressFragment"
             app:destination="@id/emailAddressFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
-        <argument
-            android:name="userId"
-            app:argType="string" />
+            app:popExitAnim="@anim/fade_out">
+            <argument
+                android:name="password"
+                android:defaultValue="@null"
+                app:nullable="true" />
+        </action>
         <action
             android:id="@+id/action_mobileNumberFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -159,7 +200,33 @@
         android:id="@+id/passwordFragment"
         android:name="com.teme.fakefacebook.fragments.signup.PasswordFragment"
         android:label="fragment_password"
-        tools:layout="@layout/fragment_password" >
+        tools:layout="@layout/fragment_password">
+        <argument
+            android:name="firstName"
+            app:argType="string" />
+        <argument
+            android:name="lastName"
+            app:argType="string" />
+        <argument
+            android:name="day"
+            app:argType="string" />
+        <argument
+            android:name="month"
+            app:argType="string" />
+        <argument
+            android:name="year"
+            app:argType="string" />
+        <argument
+            android:name="gender"
+            app:argType="string" />
+        <argument
+            android:name="mobile"
+            app:argType="string" />
+
+        <argument
+            android:name="email"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_passwordFragment_to_emailAddressFragment"
             app:destination="@id/emailAddressFragment"
@@ -167,9 +234,6 @@
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
-        <argument
-            android:name="userId"
-            app:argType="string" />
         <action
             android:id="@+id/action_passwordFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -179,22 +243,55 @@
             app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/sign_in_sign_un_nav"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_passwordFragment_to_termsPrivacyFragment"
+            app:destination="@id/termsPrivacyFragment" >
+            <argument
+                android:name="email"
+                android:defaultValue="@null" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/emailAddressFragment"
         android:name="com.teme.fakefacebook.fragments.signup.EmailAddressFragment"
         android:label="fragment_email_address"
-        tools:layout="@layout/fragment_email_address" >
+        tools:layout="@layout/fragment_email_address">
         <action
             android:id="@+id/action_emailAddressFragment_to_termsPrivacyFragment"
             app:destination="@id/termsPrivacyFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out" />
+            app:popExitAnim="@anim/fade_out" >
+            <argument
+                android:name="email"
+                android:defaultValue="@null" />
+        </action>
         <argument
-            android:name="userId"
+            android:name="firstName"
             app:argType="string" />
+        <argument
+            android:name="lastName"
+            app:argType="string" />
+        <argument
+            android:name="day"
+            app:argType="string" />
+        <argument
+            android:name="month"
+            app:argType="string" />
+        <argument
+            android:name="year"
+            app:argType="string" />
+        <argument
+            android:name="gender"
+            app:argType="string" />
+        <argument
+            android:name="mobile"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_emailAddressFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -204,15 +301,43 @@
             app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/sign_in_sign_un_nav"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_emailAddressFragment_to_passwordFragment2"
+            app:destination="@id/passwordFragment" />
     </fragment>
     <fragment
         android:id="@+id/termsPrivacyFragment"
         android:name="com.teme.fakefacebook.fragments.signup.TermsPrivacyFragment"
         android:label="fragment_terms_privacy"
-        tools:layout="@layout/fragment_terms_privacy" >
+        tools:layout="@layout/fragment_terms_privacy">
         <argument
-            android:name="userId"
+            android:name="firstName"
             app:argType="string" />
+        <argument
+            android:name="lastName"
+            app:argType="string" />
+        <argument
+            android:name="day"
+            app:argType="string" />
+        <argument
+            android:name="month"
+            app:argType="string" />
+        <argument
+            android:name="year"
+            app:argType="string" />
+        <argument
+            android:name="gender"
+            app:argType="string" />
+        <argument
+            android:name="mobile"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            app:argType="string" />
+        <argument
+            android:name="email"
+            app:argType="string"
+            app:nullable="true" />
         <action
             android:id="@+id/action_termsPrivacyFragment_to_signInFragment"
             app:destination="@id/signInFragment"

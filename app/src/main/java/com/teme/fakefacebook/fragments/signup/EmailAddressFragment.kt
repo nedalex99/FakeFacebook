@@ -15,6 +15,15 @@ import kotlinx.android.synthetic.main.fragment_email_address.next_btn
 
 class EmailAddressFragment : Fragment() {
 
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var day: String
+    private lateinit var month: String
+    private lateinit var year: String
+    private lateinit var gender: String
+    private lateinit var mobile: String
+    private lateinit var password: String
+
     private var userId: String? = null
 
     override fun onCreateView(
@@ -28,7 +37,7 @@ class EmailAddressFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userId = getUserId()
+        getUserId()
 
         setupUI()
     }
@@ -36,12 +45,12 @@ class EmailAddressFragment : Fragment() {
 
     private fun setupUI() {
         next_btn.setOnClickListener {
-            userId?.let { it1 -> addEmailAddressToUser(it1) }
+            //userId?.let { it1 -> addEmailAddressToUser(it1) }
             goToTermsFragment()
         }
 
         skip_tv.setOnClickListener {
-            userId?.let { it1 -> addEmailAddressToUser(it1) }
+            //userId?.let { it1 -> addEmailAddressToUser(it1) }
             goToTermsFragment()
         }
 
@@ -51,10 +60,19 @@ class EmailAddressFragment : Fragment() {
     }
 
     private fun goToTermsFragment() {
-        val action = userId?.let { it1 ->
-            EmailAddressFragmentDirections.actionEmailAddressFragmentToTermsPrivacyFragment(userId = it1)
-        }
-        action?.let { it1 ->
+        val action =
+            EmailAddressFragmentDirections.actionEmailAddressFragmentToTermsPrivacyFragment(
+                firstName = firstName,
+                lastName = lastName,
+                day = day,
+                month = month,
+                year = year,
+                gender = gender,
+                mobile = mobile,
+                password = password,
+                email = email_et.text.toString()
+            )
+        action.let { it1 ->
             view?.findNavController()
                 ?.navigate(it1)
         }
@@ -97,8 +115,15 @@ class EmailAddressFragment : Fragment() {
 
     private fun getUserId(): String? {
         arguments?.let {
-            val args = GenderFragmentArgs.fromBundle(requireArguments())
-            return args.userId
+            val args = EmailAddressFragmentArgs.fromBundle(requireArguments())
+            this.firstName = args.firstName
+            this.lastName = args.lastName
+            this.day = args.day
+            this.month = args.month
+            this.year = args.year
+            this.gender = args.gender
+            this.mobile = args.mobile
+            this.password = args.password.toString()
         }
         return null
     }

@@ -13,15 +13,24 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.teme.fakefacebook.R
+import kotlinx.android.synthetic.main.fragment_mobile_number.*
 import kotlinx.android.synthetic.main.fragment_password.*
 import kotlinx.android.synthetic.main.fragment_password.back_img
+import kotlinx.android.synthetic.main.fragment_password.error
 import kotlinx.android.synthetic.main.fragment_password.next_btn
 
 
 class PasswordFragment : Fragment() {
 
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var day: String
+    private lateinit var month: String
+    private lateinit var year: String
+    private lateinit var gender: String
+    private lateinit var mobile: String
+
     private var userId: String? = null
-    private lateinit var database: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +43,7 @@ class PasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        database = Firebase.database.reference
-
-        userId = getUserId()
+        getUserId()
 
         setupUI()
     }
@@ -47,7 +54,7 @@ class PasswordFragment : Fragment() {
                 showError()
             } else {
                 hideError()
-                userId?.let { it1 -> addPasswordToUser(it1) }
+                //userId?.let { it1 -> addPasswordToUser(it1) }
                 goToEmailFragment()
             }
         }
@@ -58,10 +65,19 @@ class PasswordFragment : Fragment() {
     }
 
     private fun goToEmailFragment() {
-        val action = userId?.let { it1 ->
-            PasswordFragmentDirections.actionPasswordFragmentToEmailAddressFragment(userId = it1)
-        }
-        action?.let { it1 ->
+        val action =
+            PasswordFragmentDirections.actionPasswordFragmentToEmailAddressFragment(
+                firstName = firstName,
+                lastName = lastName,
+                day = day,
+                month = month,
+                year = year,
+                gender = gender,
+                mobile = mobile,
+                password = password_et.text.toString()
+            )
+
+        action.let { it1 ->
             view?.findNavController()?.navigate(it1)
         }
     }
@@ -115,8 +131,14 @@ class PasswordFragment : Fragment() {
 
     private fun getUserId(): String? {
         arguments?.let {
-            val args = GenderFragmentArgs.fromBundle(requireArguments())
-            return args.userId
+            val args = PasswordFragmentArgs.fromBundle(requireArguments())
+            this.firstName = args.firstName
+            this.lastName = args.lastName
+            this.day = args.day
+            this.month = args.month
+            this.year = args.year
+            this.gender = args.gender
+            this.mobile = args.mobile
         }
         return null
     }

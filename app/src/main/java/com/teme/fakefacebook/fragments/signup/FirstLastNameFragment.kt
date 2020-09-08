@@ -54,7 +54,7 @@ class FirstLastNameFragment : Fragment() {
                 userId = FirebaseFirestore.getInstance()
                     .collection("users")
                     .document().id
-                writeNewUser(userId)
+                //writeNewUser(userId)
                 goToDateOfBirthFragment(userId)
                 hideError()
             }
@@ -78,7 +78,7 @@ class FirstLastNameFragment : Fragment() {
                 "Stop Creating Account"
             ) { _, _ ->
                 if (userId != null) {
-                    deleteUser(userId)
+                    //deleteUser(userId)
                 }
                 view?.findNavController()
                     ?.navigate(R.id.action_firstLastNameFragment_to_signInFragment)
@@ -162,7 +162,10 @@ class FirstLastNameFragment : Fragment() {
 
     private fun goToDateOfBirthFragment(uuid: String?) {
         val action = FirstLastNameFragmentDirections
-            .actionFirstLastNameFragmentToDateOfBirthFragment(userId = uuid.toString())
+            .actionFirstLastNameFragmentToDateOfBirthFragment(
+                firstName = first_name_et.text.toString(),
+                lastName = last_name_et.text.toString()
+            )
         view?.findNavController()
             ?.navigate(action)
     }

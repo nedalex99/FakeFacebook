@@ -20,8 +20,14 @@ import kotlinx.android.synthetic.main.fragment_mobile_number.next_btn
 
 class MobileNumberFragment : Fragment() {
 
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var day: String
+    private lateinit var month: String
+    private lateinit var year: String
+    private lateinit var gender: String
+
     private var userId: String? = null
-    private lateinit var database: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,9 +40,7 @@ class MobileNumberFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        database = Firebase.database.reference
-
-        userId = getUserId()
+        getUserId()
 
         setupUI()
 
@@ -67,9 +71,9 @@ class MobileNumberFragment : Fragment() {
                 showError()
                 //Toast.makeText(context, "Please, insert a mobile number!", Toast.LENGTH_LONG).show()
             } else {
-                userId?.let {
+                /*userId?.let {
                     addMobileNumberToUser(it)
-                }
+                }*/
                 goToPasswordFragment()
             }
         }
@@ -84,17 +88,32 @@ class MobileNumberFragment : Fragment() {
     }
 
     private fun goToPasswordFragment() {
-        val action = userId?.let { it1 ->
-            MobileNumberFragmentDirections.actionMobileNumberFragmentToPasswordFragment(userId = it1)
-        }
-        action?.let { it1 ->
+        val action =
+            MobileNumberFragmentDirections.actionMobileNumberFragmentToPasswordFragment(
+                firstName = firstName,
+                lastName = lastName,
+                day = day,
+                month = month,
+                year = year,
+                gender = gender,
+                mobile = mobile_number_et.text.toString()
+            )
+        action.let { it1 ->
             view?.findNavController()?.navigate(it1)
         }
     }
 
     private fun goToEmailFragment() {
         val action = userId?.let { it1 ->
-            MobileNumberFragmentDirections.actionMobileNumberFragmentToEmailAddressFragment(userId = it1)
+            MobileNumberFragmentDirections.actionMobileNumberFragmentToEmailAddressFragment(
+                firstName = firstName,
+                lastName = lastName,
+                day = day,
+                month = month,
+                year = year,
+                gender = gender,
+                mobile = mobile_number_et.text.toString()
+            )
         }
         action?.let { it1 ->
             view?.findNavController()?.navigate(it1)
@@ -151,8 +170,13 @@ class MobileNumberFragment : Fragment() {
 
     private fun getUserId(): String? {
         arguments?.let {
-            val args = GenderFragmentArgs.fromBundle(requireArguments())
-            return args.userId
+            val args = MobileNumberFragmentArgs.fromBundle(requireArguments())
+            this.firstName = args.firstName
+            this.lastName = args.lastName
+            this.day = args.day
+            this.month = args.month
+            this.year = args.year
+            this.gender = args.gender
         }
         return null
     }

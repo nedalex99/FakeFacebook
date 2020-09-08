@@ -18,6 +18,12 @@ import java.util.*
 
 class GenderFragment : Fragment() {
 
+    private lateinit var firstName: String
+    private lateinit var lastName: String
+    private lateinit var day: String
+    private lateinit var month: String
+    private lateinit var year: String
+
     private var userId: String? = null
     private var gender: String? = null
 
@@ -32,7 +38,7 @@ class GenderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        userId = getUserId()
+        getUserId()
 
         setupUI()
     }
@@ -43,7 +49,7 @@ class GenderFragment : Fragment() {
                 showError()
                 //Toast.makeText(context, "Please, select a gender!", Toast.LENGTH_SHORT).show()
             } else {
-                userId?.let { addGenderToUser(it) }
+                //userId?.let { addGenderToUser(it) }
                 goToMobileNumberFragment()
             }
         }
@@ -64,9 +70,16 @@ class GenderFragment : Fragment() {
     }
 
     private fun goToMobileNumberFragment() {
-        val action = userId?.let { it1 ->
-            GenderFragmentDirections.actionGenderFragmentToMobileNumberFragment(userId = it1)
-        }
+        val action = gender?.let {
+                GenderFragmentDirections.actionGenderFragmentToMobileNumberFragment(
+                    firstName = firstName,
+                    lastName = lastName,
+                    day = day,
+                    month = month,
+                    year = year,
+                    gender = it
+                )
+            }
         if (action != null) {
             view?.findNavController()?.navigate(action)
         }
@@ -127,7 +140,11 @@ class GenderFragment : Fragment() {
     private fun getUserId(): String? {
         arguments?.let {
             val args = GenderFragmentArgs.fromBundle(requireArguments())
-            return args.userId
+            this.firstName = args.firstName
+            this.lastName = args.lastName
+            this.day = args.day
+            this.month = args.month
+            this.year = args.year
         }
         return null
     }
