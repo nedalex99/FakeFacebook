@@ -110,11 +110,25 @@
                 android:text="Mobile number"
                 android:textAllCaps="false" />
 
-            <EditText
-                android:id="@+id/mobile_number_et"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="number" />
+                android:orientation="horizontal">
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ccp_countryPreference="RO" />
+
+                <EditText
+                    android:id="@+id/mobile_number_et"
+                    android:hint="Phone number"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number|text" />
+
+            </LinearLayout>
 
             <Button
                 android:id="@+id/next_btn"

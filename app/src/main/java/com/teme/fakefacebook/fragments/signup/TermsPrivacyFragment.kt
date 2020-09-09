@@ -41,9 +41,12 @@ class TermsPrivacyFragment : Fragment() {
         }
 
         sign_up_btn.setOnClickListener {
-            progress_horizontal.visibility = View.VISIBLE
-            val email = user?.email.toString()
+            //progress_horizontal.visibility = View.VISIBLE
+            goToCreateAccSplashFragment()
+            /*val email = user?.email.toString()
             val password = user?.password.toString()
+
+
 
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(
                 email,
@@ -58,7 +61,8 @@ class TermsPrivacyFragment : Fragment() {
                                 .document(it1)
                                 .set(it2)
                                 .addOnCompleteListener {
-                                    progress_horizontal.visibility = View.GONE
+                                    //view?.findNavController()?.navigate(R.id.action_termsPrivacyFragment_to_splashFragment)
+                                    //progress_horizontal.visibility = View.GONE
                                 }
                         }
                     }
@@ -66,8 +70,16 @@ class TermsPrivacyFragment : Fragment() {
                     Toast.makeText(context, createAccTask.exception.toString(), Toast.LENGTH_LONG)
                         .show()
                 }
-            }
+            }*/
         }
+    }
+
+    private fun goToCreateAccSplashFragment() {
+        val action = user?.let {
+            TermsPrivacyFragmentDirections
+                .actionTermsPrivacyFragmentToCreateAccSplashFragment(user = it)
+        }
+        action?.let { view?.findNavController()?.navigate(it) }
     }
 
     private fun createAlertDialog() {

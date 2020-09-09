@@ -228,5 +228,34 @@
             app:popExitAnim="@anim/fade_out"
             app:popUpTo="@id/sign_in_sign_un_nav"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_termsPrivacyFragment_to_createAccSplashFragment"
+            app:destination="@id/createAccSplashFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/accountConfirmationFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.AccountConfirmationFragment"
+        android:label="fragment_account_confirmation"
+        tools:layout="@layout/fragment_account_confirmation">
+        <argument
+            android:name="user"
+            app:argType="com.teme.fakefacebook.models.User" />
+        <argument
+            android:name="code"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/createAccSplashFragment"
+        android:name="com.teme.fakefacebook.fragments.signup.CreateAccSplashFragment"
+        android:label="fragment_create_acc_splash"
+        tools:layout="@layout/fragment_create_acc_splash">
+        <action
+            android:id="@+id/action_createAccSplashFragment_to_accountConfirmationFragment"
+            app:destination="@id/accountConfirmationFragment"
+            app:popUpTo="@id/signInFragment"
+            app:popUpToInclusive="false" />
+        <argument
+            android:name="user"
+            app:argType="com.teme.fakefacebook.models.User" />
     </fragment>
 </navigation>
