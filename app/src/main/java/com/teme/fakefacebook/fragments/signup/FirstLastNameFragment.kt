@@ -9,14 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
-import com.teme.fakefacebook.models.Name
+import com.teme.fakefacebook.models.User
 import kotlinx.android.synthetic.main.fragment_first_last_name.*
 
 class FirstLastNameFragment : Fragment() {
 
-    private var userId: String? = null
+    private lateinit var user: User
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,7 +35,12 @@ class FirstLastNameFragment : Fragment() {
     }
 
     private fun setupUI() {
+
         next_btn.setOnClickListener {
+            user = User(
+                firstName = first_name_et.text.toString(),
+                lastName = last_name_et.text.toString()
+            )
             nextBtnClick()
         }
 
@@ -51,11 +55,7 @@ class FirstLastNameFragment : Fragment() {
                 showError("Your name is not correct")
             }
             checkName(last_name_et.text.toString()) && checkName(first_name_et.text.toString()) -> {
-                userId = FirebaseFirestore.getInstance()
-                    .collection("users")
-                    .document().id
-                //writeNewUser(userId)
-                goToDateOfBirthFragment(userId)
+                goToDateOfBirthFragment()
                 hideError()
             }
             !checkName(last_name_et.text.toString()) && !checkName(first_name_et.text.toString()) -> {
@@ -77,9 +77,6 @@ class FirstLastNameFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (userId != null) {
-                    //deleteUser(userId)
-                }
                 view?.findNavController()
                     ?.navigate(R.id.action_firstLastNameFragment_to_signInFragment)
             }
@@ -87,27 +84,6 @@ class FirstLastNameFragment : Fragment() {
                 setCancelable(true)
             }
         }?.create()?.show()
-    }
-
-    private fun deleteUser(userId: String?) {
-        userId?.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .delete()
-        }
-    }
-
-    private fun writeNewUser(userId: String?) {
-        val name =
-            Name(firstName = first_name_et.text.toString(), lastName = last_name_et.text.toString())
-
-        userId?.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .set(name)
-        }
     }
 
     private fun firstNameTextChanged() {
@@ -160,14 +136,12 @@ class FirstLastNameFragment : Fragment() {
         })
     }
 
-    private fun goToDateOfBirthFragment(uuid: String?) {
+    private fun goToDateOfBirthFragment() {
         val action = FirstLastNameFragmentDirections
-            .actionFirstLastNameFragmentToDateOfBirthFragment(
-                firstName = first_name_et.text.toString(),
-                lastName = last_name_et.text.toString()
-            )
+            .actionFirstLastNameFragmentToDateOfBirthFragment(user)
         view?.findNavController()
             ?.navigate(action)
+
     }
 
 

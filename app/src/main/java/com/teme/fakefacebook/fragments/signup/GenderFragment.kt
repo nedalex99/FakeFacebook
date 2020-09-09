@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
+import com.teme.fakefacebook.models.User
 import kotlinx.android.synthetic.main.fragment_gender.*
 import kotlinx.android.synthetic.main.fragment_gender.back_img
 import kotlinx.android.synthetic.main.fragment_gender.error
@@ -18,13 +18,8 @@ import java.util.*
 
 class GenderFragment : Fragment() {
 
-    private lateinit var firstName: String
-    private lateinit var lastName: String
-    private lateinit var day: String
-    private lateinit var month: String
-    private lateinit var year: String
+    private var user: User? = null
 
-    private var userId: String? = null
     private var gender: String? = null
 
     override fun onCreateView(
@@ -38,7 +33,7 @@ class GenderFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getUserId()
+        user = getUser()
 
         setupUI()
     }
@@ -47,9 +42,8 @@ class GenderFragment : Fragment() {
         next_btn.setOnClickListener {
             if (radio_group.checkedRadioButtonId == -1) {
                 showError()
-                //Toast.makeText(context, "Please, select a gender!", Toast.LENGTH_SHORT).show()
             } else {
-                //userId?.let { addGenderToUser(it) }
+                user?.gender = gender
                 goToMobileNumberFragment()
             }
         }
@@ -70,18 +64,13 @@ class GenderFragment : Fragment() {
     }
 
     private fun goToMobileNumberFragment() {
-        val action = gender?.let {
-                GenderFragmentDirections.actionGenderFragmentToMobileNumberFragment(
-                    firstName = firstName,
-                    lastName = lastName,
-                    day = day,
-                    month = month,
-                    year = year,
-                    gender = it
-                )
-            }
-        if (action != null) {
-            view?.findNavController()?.navigate(action)
+        val action = user?.let { it1 ->
+            GenderFragmentDirections.actionGenderFragmentToMobileNumberFragment(
+                user = it1
+            )
+        }
+        action?.let {
+            view?.findNavController()?.navigate(it)
         }
     }
 
@@ -92,9 +81,6 @@ class GenderFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (userId != null) {
-                    deleteUser(userId)
-                }
                 view?.findNavController()
                     ?.navigate(R.id.action_genderFragment_to_signInFragment)
             }
@@ -103,23 +89,6 @@ class GenderFragment : Fragment() {
             }
         }?.create()?.show()
     }
-
-    private fun addGenderToUser(userId: String) {
-        userId.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .update("gender", gender)
-        }
-    }
-
-    private fun deleteUser(userId: String?) {
-        userId?.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .delete()
-        }    }
 
     private fun showError() {
         female.setTextColor(ContextCompat.getColor(requireContext(), R.color.red))
@@ -137,14 +106,10 @@ class GenderFragment : Fragment() {
         error.visibility = View.GONE
     }
 
-    private fun getUserId(): String? {
+    private fun getUser(): User? {
         arguments?.let {
             val args = GenderFragmentArgs.fromBundle(requireArguments())
-            this.firstName = args.firstName
-            this.lastName = args.lastName
-            this.day = args.day
-            this.month = args.month
-            this.year = args.year
+            return args.user
         }
         return null
     }

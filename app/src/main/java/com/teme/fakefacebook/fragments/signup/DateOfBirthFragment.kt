@@ -10,20 +10,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
-import com.teme.fakefacebook.models.BirthDate
 import com.teme.fakefacebook.models.User
 import kotlinx.android.synthetic.main.fragment_date_of_birth.*
 import kotlinx.android.synthetic.main.fragment_date_of_birth.back_img
 import kotlinx.android.synthetic.main.fragment_date_of_birth.error
-import kotlinx.android.synthetic.main.fragment_first_last_name.*
 import java.time.LocalDateTime
 
 
 class DateOfBirthFragment : Fragment() {
 
-    private lateinit var firstName: String
-    private lateinit var lastName: String
-    private var userId: String? = null
+    private var user: User? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,25 +32,21 @@ class DateOfBirthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //userId = getUserId()
-
-        getName()
+        user = getUser()
 
         setupUI()
     }
 
     private fun setupUI() {
+
         choose_date_btn.setOnClickListener {
             if (!checkYearChosen()) {
                 showError()
-                /*Toast.makeText(
-                    context,
-                    "You are too young to have a Facebook account!",
-                    Toast.LENGTH_LONG
-                ).show()*/
             } else {
+                user?.day = date_picker.dayOfMonth.toString()
+                user?.month = date_picker.month.toString()
+                user?.year = date_picker.year.toString()
                 hideError()
-                //userId?.let { it1 -> addBirthDateToUser(it1) }
                 goToGenderFragment()
             }
         }
@@ -75,17 +67,12 @@ class DateOfBirthFragment : Fragment() {
     }
 
     private fun goToGenderFragment() {
-        val birthDate = BirthDate(date_picker.year, date_picker.month, date_picker.dayOfMonth)
-        val action = DateOfBirthFragmentDirections
-            .actionDateOfBirthFragmentToGenderFragment(
-                firstName = firstName,
-                lastName = lastName,
-                day = birthDate.day.toString(),
-                month = birthDate.month.toString(),
-                year = birthDate.year.toString()
-            )
+        val action = user?.let {
+            DateOfBirthFragmentDirections
+                .actionDateOfBirthFragmentToGenderFragment(user = it)
+        }
 
-        view?.findNavController()?.navigate(action)
+        action?.let { view?.findNavController()?.navigate(it) }
     }
 
     private fun createAlertDialog() {
@@ -95,9 +82,6 @@ class DateOfBirthFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (userId != null) {
-                    deleteUser(userId)
-                }
                 view?.findNavController()
                     ?.navigate(R.id.action_dateOfBirthFragment_to_signInFragment)
             }
@@ -105,28 +89,6 @@ class DateOfBirthFragment : Fragment() {
                 setCancelable(true)
             }
         }?.create()?.show()
-    }
-
-    private fun addBirthDateToUser(userId: String) {
-        val birthDate = BirthDate(date_picker.year, date_picker.month, date_picker.dayOfMonth)
-
-        userId.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .update("birthdate", birthDate)
-        }
-
-        //database.child("users").child(uuid).child("birthDate").setValue(birthDate)
-    }
-
-    private fun deleteUser(userId: String?) {
-        userId?.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .delete()
-        }
     }
 
     private fun showError() {
@@ -139,23 +101,12 @@ class DateOfBirthFragment : Fragment() {
         error.visibility = View.GONE
     }
 
-    private fun getName() {
+    private fun getUser(): User? {
         arguments?.let {
             val args = DateOfBirthFragmentArgs.fromBundle(requireArguments())
-            val firstName = args.firstName
-            val lastName = args.lastName
-            this.firstName = firstName
-            this.lastName = lastName
-        }
-    }
+            return args.user
 
-    private fun getUserId(): String? {
-        arguments?.let {
-            val args = DateOfBirthFragmentArgs.fromBundle(requireArguments())
-            //return args.userId
         }
         return null
     }
-
-
 }

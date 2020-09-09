@@ -9,25 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.teme.fakefacebook.R
+import com.teme.fakefacebook.models.User
 import kotlinx.android.synthetic.main.fragment_mobile_number.*
 import kotlinx.android.synthetic.main.fragment_mobile_number.back_img
 import kotlinx.android.synthetic.main.fragment_mobile_number.next_btn
 
 class MobileNumberFragment : Fragment() {
 
-    private lateinit var firstName: String
-    private lateinit var lastName: String
-    private lateinit var day: String
-    private lateinit var month: String
-    private lateinit var year: String
-    private lateinit var gender: String
-
-    private var userId: String? = null
+    private var user: User? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +30,7 @@ class MobileNumberFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getUserId()
+        user = getUser()
 
         setupUI()
 
@@ -69,16 +59,14 @@ class MobileNumberFragment : Fragment() {
         next_btn.setOnClickListener {
             if (mobile_number_et.text.isEmpty()) {
                 showError()
-                //Toast.makeText(context, "Please, insert a mobile number!", Toast.LENGTH_LONG).show()
             } else {
-                /*userId?.let {
-                    addMobileNumberToUser(it)
-                }*/
+                user?.mobileNumber = mobile_number_et.text.toString()
                 goToPasswordFragment()
             }
         }
 
         sign_up_email_tv.setOnClickListener {
+            user?.mobileNumber = mobile_number_et.text.toString()
             goToEmailFragment()
         }
 
@@ -89,35 +77,23 @@ class MobileNumberFragment : Fragment() {
 
     private fun goToPasswordFragment() {
         val action =
-            MobileNumberFragmentDirections.actionMobileNumberFragmentToPasswordFragment(
-                firstName = firstName,
-                lastName = lastName,
-                day = day,
-                month = month,
-                year = year,
-                gender = gender,
-                mobile = mobile_number_et.text.toString()
-            )
-        action.let { it1 ->
-            view?.findNavController()?.navigate(it1)
-        }
+            user?.let {
+                MobileNumberFragmentDirections.actionMobileNumberFragmentToPasswordFragment(
+                    user = it
+                )
+            }
+        action?.let { view?.findNavController()?.navigate(it) }
     }
 
     private fun goToEmailFragment() {
-        val action = userId?.let { it1 ->
-            MobileNumberFragmentDirections.actionMobileNumberFragmentToEmailAddressFragment(
-                firstName = firstName,
-                lastName = lastName,
-                day = day,
-                month = month,
-                year = year,
-                gender = gender,
-                mobile = mobile_number_et.text.toString()
-            )
-        }
-        action?.let { it1 ->
-            view?.findNavController()?.navigate(it1)
-        }
+        val action =
+            user?.let {
+                MobileNumberFragmentDirections.actionMobileNumberFragmentToEmailAddressFragment(
+                    user = it
+                )
+            }
+        action?.let { view?.findNavController()?.navigate(it) }
+
     }
 
     private fun createAlertDialog() {
@@ -127,9 +103,6 @@ class MobileNumberFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (userId != null) {
-                    deleteUser(userId)
-                }
                 view?.findNavController()
                     ?.navigate(R.id.action_mobileNumberFragment_to_signInFragment)
             }
@@ -137,24 +110,6 @@ class MobileNumberFragment : Fragment() {
                 setCancelable(true)
             }
         }?.create()?.show()
-    }
-
-    private fun addMobileNumberToUser(userId: String?) {
-        userId?.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .update("mobileNumber", mobile_number_et.text.toString())
-        }
-    }
-
-    private fun deleteUser(userId: String?) {
-        userId?.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .delete()
-        }
     }
 
     private fun showError() {
@@ -168,15 +123,10 @@ class MobileNumberFragment : Fragment() {
         error.visibility = View.GONE
     }
 
-    private fun getUserId(): String? {
+    private fun getUser(): User? {
         arguments?.let {
             val args = MobileNumberFragmentArgs.fromBundle(requireArguments())
-            this.firstName = args.firstName
-            this.lastName = args.lastName
-            this.day = args.day
-            this.month = args.month
-            this.year = args.year
-            this.gender = args.gender
+            return args.user
         }
         return null
     }

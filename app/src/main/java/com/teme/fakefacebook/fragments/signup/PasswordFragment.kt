@@ -7,13 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ktx.database
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.ktx.Firebase
 import com.teme.fakefacebook.R
-import kotlinx.android.synthetic.main.fragment_mobile_number.*
+import com.teme.fakefacebook.models.User
 import kotlinx.android.synthetic.main.fragment_password.*
 import kotlinx.android.synthetic.main.fragment_password.back_img
 import kotlinx.android.synthetic.main.fragment_password.error
@@ -22,15 +18,7 @@ import kotlinx.android.synthetic.main.fragment_password.next_btn
 
 class PasswordFragment : Fragment() {
 
-    private lateinit var firstName: String
-    private lateinit var lastName: String
-    private lateinit var day: String
-    private lateinit var month: String
-    private lateinit var year: String
-    private lateinit var gender: String
-    private lateinit var mobile: String
-
-    private var userId: String? = null
+    private var user: User? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +31,7 @@ class PasswordFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        getUserId()
+        user = getUser()
 
         setupUI()
     }
@@ -55,6 +43,7 @@ class PasswordFragment : Fragment() {
             } else {
                 hideError()
                 //userId?.let { it1 -> addPasswordToUser(it1) }
+                user?.password = password_et.text.toString()
                 goToEmailFragment()
             }
         }
@@ -66,18 +55,13 @@ class PasswordFragment : Fragment() {
 
     private fun goToEmailFragment() {
         val action =
-            PasswordFragmentDirections.actionPasswordFragmentToEmailAddressFragment(
-                firstName = firstName,
-                lastName = lastName,
-                day = day,
-                month = month,
-                year = year,
-                gender = gender,
-                mobile = mobile,
-                password = password_et.text.toString()
-            )
+            user?.let {
+                PasswordFragmentDirections.actionPasswordFragmentToEmailAddressFragment(
+                    user = it
+                )
+            }
 
-        action.let { it1 ->
+        action?.let { it1 ->
             view?.findNavController()?.navigate(it1)
         }
     }
@@ -89,9 +73,6 @@ class PasswordFragment : Fragment() {
             setPositiveButton(
                 "Stop Creating Account"
             ) { _, _ ->
-                if (userId != null) {
-                    deleteUser(userId)
-                }
                 view?.findNavController()
                     ?.navigate(R.id.action_passwordFragment_to_signInFragment)
             }
@@ -99,24 +80,6 @@ class PasswordFragment : Fragment() {
                 setCancelable(true)
             }
         }?.create()?.show()
-    }
-
-    private fun addPasswordToUser(userId: String?) {
-        userId?.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .update("password", password_et.text.toString())
-        }
-    }
-
-    private fun deleteUser(userId: String?) {
-        userId?.let {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(it)
-                .delete()
-        }
     }
 
     private fun showError() {
@@ -129,16 +92,10 @@ class PasswordFragment : Fragment() {
         error.visibility = View.GONE
     }
 
-    private fun getUserId(): String? {
+    private fun getUser(): User? {
         arguments?.let {
             val args = PasswordFragmentArgs.fromBundle(requireArguments())
-            this.firstName = args.firstName
-            this.lastName = args.lastName
-            this.day = args.day
-            this.month = args.month
-            this.year = args.year
-            this.gender = args.gender
-            this.mobile = args.mobile
+            return args.user
         }
         return null
     }
