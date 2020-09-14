@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
 import com.teme.fakefacebook.models.User
 import kotlinx.android.synthetic.main.fragment_email_address.*
 import kotlinx.android.synthetic.main.fragment_email_address.back_img
+import kotlinx.android.synthetic.main.fragment_email_address.error
 import kotlinx.android.synthetic.main.fragment_email_address.next_btn
 
 class EmailAddressFragment : Fragment() {
@@ -34,12 +34,16 @@ class EmailAddressFragment : Fragment() {
         setupUI()
     }
 
-
     private fun setupUI() {
 
         next_btn.setOnClickListener {
-            user?.email = email_et.text.toString()
-            goToTermsFragment()
+            if (checkEmail()) {
+                hideError()
+                user?.email = email_et.text.toString()
+                goToTermsFragment()
+            } else {
+                showError()
+            }
         }
 
         skip_tv.setOnClickListener {
@@ -49,6 +53,23 @@ class EmailAddressFragment : Fragment() {
         back_img.setOnClickListener {
             createAlertDialog()
         }
+    }
+
+    private fun checkEmail(): Boolean {
+        val emailPattern = Regex(
+            "(?:[a-z0-9!#\$%&'*+/=?^_`{|}~-]+" +
+                    "(?:\\.[a-z0-9!#\$%&'*+/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c" +
+                    "\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")" +
+                    "@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?" +
+                    "\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.)" +
+                    "{3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a" +
+                    "\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\])"
+        )
+
+        if (emailPattern.matches(email_et.text)) {
+            return true
+        }
+        return false
     }
 
     private fun goToTermsFragment() {
@@ -80,12 +101,21 @@ class EmailAddressFragment : Fragment() {
         }?.create()?.show()
     }
 
-
     private fun getUser(): User? {
         arguments?.let {
             val args = EmailAddressFragmentArgs.fromBundle(requireArguments())
             return args.user
         }
         return null
+    }
+
+    private fun showError() {
+        error.error = true.toString()
+        error.visibility = View.VISIBLE
+    }
+
+    private fun hideError() {
+        error.error = null
+        error.visibility = View.GONE
     }
 }

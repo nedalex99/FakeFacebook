@@ -5,11 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
 import com.teme.fakefacebook.models.User
 import kotlinx.android.synthetic.main.fragment_email_address.back_img
@@ -41,36 +38,7 @@ class TermsPrivacyFragment : Fragment() {
         }
 
         sign_up_btn.setOnClickListener {
-            //progress_horizontal.visibility = View.VISIBLE
             goToCreateAccSplashFragment()
-            /*val email = user?.email.toString()
-            val password = user?.password.toString()
-
-
-
-            FirebaseAuth.getInstance().createUserWithEmailAndPassword(
-                email,
-                password
-            ).addOnCompleteListener { createAccTask ->
-                if (createAccTask.isSuccessful) {
-                    val userId = FirebaseAuth.getInstance().currentUser?.uid
-                    userId?.let { it1 ->
-                        user?.let { it2 ->
-                            FirebaseFirestore.getInstance()
-                                .collection("users")
-                                .document(it1)
-                                .set(it2)
-                                .addOnCompleteListener {
-                                    //view?.findNavController()?.navigate(R.id.action_termsPrivacyFragment_to_splashFragment)
-                                    //progress_horizontal.visibility = View.GONE
-                                }
-                        }
-                    }
-                } else {
-                    Toast.makeText(context, createAccTask.exception.toString(), Toast.LENGTH_LONG)
-                        .show()
-                }
-            }*/
         }
     }
 

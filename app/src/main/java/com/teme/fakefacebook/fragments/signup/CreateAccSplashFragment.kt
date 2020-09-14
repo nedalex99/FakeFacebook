@@ -1,22 +1,17 @@
 package com.teme.fakefacebook.fragments.signup
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.findNavController
-import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.PhoneAuthCredential
-import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
 import com.teme.fakefacebook.models.User
 import kotlinx.android.synthetic.main.fragment_create_acc_splash.*
-import java.util.concurrent.TimeUnit
 
 class CreateAccSplashFragment : Fragment() {
 

@@ -60,8 +60,13 @@ class MobileNumberFragment : Fragment() {
             if (mobile_number_et.text.isEmpty()) {
                 showError()
             } else {
-                user?.mobileNumber = ccp.selectedCountryCodeWithPlus + mobile_number_et.text.toString()
-                goToPasswordFragment()
+                if (checkMobileNumber()) {
+                    user?.mobileNumber =
+                        ccp.selectedCountryCodeWithPlus + mobile_number_et.text.toString()
+                    goToPasswordFragment()
+                } else {
+                    showError()
+                }
             }
         }
 
@@ -73,6 +78,13 @@ class MobileNumberFragment : Fragment() {
         back_img.setOnClickListener {
             createAlertDialog()
         }
+    }
+
+    private fun checkMobileNumber(): Boolean {
+        if (mobile_number_et.text.toString().count() != 10) {
+            return false
+        }
+        return true
     }
 
     private fun goToPasswordFragment() {

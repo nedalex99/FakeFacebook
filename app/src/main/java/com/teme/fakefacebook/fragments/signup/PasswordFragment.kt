@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
 import com.teme.fakefacebook.models.User
 import kotlinx.android.synthetic.main.fragment_password.*
@@ -40,17 +39,36 @@ class PasswordFragment : Fragment() {
         next_btn.setOnClickListener {
             if (password_et.text.isEmpty()) {
                 showError()
-            } else {
+            } else if (checkPassword()) {
                 hideError()
-                //userId?.let { it1 -> addPasswordToUser(it1) }
                 user?.password = password_et.text.toString()
                 goToEmailFragment()
+            } else {
+                showError()
             }
         }
 
         back_img.setOnClickListener {
             createAlertDialog()
         }
+    }
+
+    private fun checkPassword(): Boolean {
+        val passwordPattern = Regex(
+            "^(?=.*\\d)" +
+                    "(?=.*[a-z])" +
+                    "(?=.*[A-Z])" +
+                    "(?=.*[!@#\$%^&*_+=?;<>,.])" +
+                    "(?=\\S+$)" +
+                    ".{6,14}\$"
+        )
+
+        if (passwordPattern.matches(password_et.text)) {
+            return true
+        }
+
+        return false
+
     }
 
     private fun goToEmailFragment() {
