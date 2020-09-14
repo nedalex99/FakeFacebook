@@ -240,9 +240,11 @@
         <argument
             android:name="user"
             app:argType="com.teme.fakefacebook.models.User" />
-        <argument
-            android:name="code"
-            app:argType="string" />
+        <action
+            android:id="@+id/action_accountConfirmationFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/sign_in_sign_un_nav"
+            app:popUpToInclusive="false" />
     </fragment>
     <fragment
         android:id="@+id/createAccSplashFragment"

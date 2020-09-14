@@ -46,14 +46,14 @@ class CreateAccSplashFragment : Fragment() {
                 if (createUserTask.isSuccessful) {
                     val userId = FirebaseAuth.getInstance().currentUser?.uid
                     addUserToFirestore(userId)
-                    createPhoneAuth()
+                    //createPhoneAuth()
                 } else {
                     Toast.makeText(context, createUserTask.toString(), Toast.LENGTH_LONG).show()
                 }
             }
     }
 
-    private fun createPhoneAuth() {
+   /* private fun createPhoneAuth() {
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
             user?.mobileNumber.toString(),
             60,
@@ -61,7 +61,8 @@ class CreateAccSplashFragment : Fragment() {
             requireActivity(),
             object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
                 override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                    Log.i("Verification completed", p0.smsCode.toString())
+                    //Log.i("Verification completed", p0.smsCode.toString())
+                    p0.smsCode?.let { goToAccountConfirmationFragment(it, p0) }
                 }
 
                 override fun onVerificationFailed(p0: FirebaseException) {
@@ -69,12 +70,12 @@ class CreateAccSplashFragment : Fragment() {
                 }
 
                 override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
-                    goToAccountConfirmationFragment(p0)
+                    //goToAccountConfirmationFragment(p0)
                 }
 
             }
         )
-    }
+    }*/
 
     private fun addUserToFirestore(userId: String?) {
         userId?.let {
@@ -85,7 +86,7 @@ class CreateAccSplashFragment : Fragment() {
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             progress_bar.visibility = View.GONE
-                            //goToAccountConfirmationFragment()
+                            goToAccountConfirmationFragment()
                         } else {
                             Toast.makeText(context, it.toString(), Toast.LENGTH_LONG).show()
                         }
@@ -94,12 +95,11 @@ class CreateAccSplashFragment : Fragment() {
         }
     }
 
-    private fun goToAccountConfirmationFragment(code: String) {
+    private fun goToAccountConfirmationFragment() {
         val action = user?.let {
             CreateAccSplashFragmentDirections
                 .actionCreateAccSplashFragmentToAccountConfirmationFragment(
-                    user = it,
-                    code = code
+                    user = it
                 )
         }
         action?.let {
