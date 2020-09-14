@@ -60,7 +60,7 @@ class MobileNumberFragment : Fragment() {
             if (mobile_number_et.text.isEmpty()) {
                 showError()
             } else {
-                user?.mobileNumber = mobile_number_et.text.toString()
+                user?.mobileNumber = ccp.selectedCountryCodeWithPlus + mobile_number_et.text.toString()
                 goToPasswordFragment()
             }
         }
