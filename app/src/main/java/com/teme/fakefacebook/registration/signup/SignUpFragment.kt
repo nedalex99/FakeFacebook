@@ -1,4 +1,4 @@
-package com.teme.fakefacebook.fragments.signup
+package com.teme.fakefacebook.registration.signup
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

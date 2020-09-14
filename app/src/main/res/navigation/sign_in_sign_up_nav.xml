@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.teme.fakefacebook.fragments.SignInFragment"
+        android:name="com.teme.fakefacebook.registration.signin.SignInFragment"
         android:label="fragment_sign_in"
         tools:layout="@layout/fragment_sign_in">
         <action
@@ -19,10 +19,13 @@
         <action
             android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
             app:destination="@id/forgotPasswordFragment" />
+        <action
+            android:id="@+id/action_signInFragment_to_dashboardActivity"
+            app:destination="@id/dashboardActivity" />
     </fragment>
     <fragment
         android:id="@+id/signUpFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.SignUpFragment"
+        android:name="com.teme.fakefacebook.registration.signup.SignUpFragment"
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up">
         <action
@@ -44,7 +47,7 @@
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
-        android:name="com.teme.fakefacebook.fragments.ForgotPasswordFragment"
+        android:name="com.teme.fakefacebook.registration.forgotpassword.ForgotPasswordFragment"
         android:label="fragment_forgot_password"
         tools:layout="@layout/fragment_forgot_password">
         <action
@@ -53,7 +56,7 @@
     </fragment>
     <fragment
         android:id="@+id/firstLastNameFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.FirstLastNameFragment"
+        android:name="com.teme.fakefacebook.registration.signup.FirstLastNameFragment"
         android:label="fragment_first_last_name"
         tools:layout="@layout/fragment_first_last_name">
         <action
@@ -75,12 +78,12 @@
     </fragment>
     <fragment
         android:id="@+id/dateOfBirthFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.DateOfBirthFragment"
+        android:name="com.teme.fakefacebook.registration.signup.DateOfBirthFragment"
         android:label="fragment_date_of_birth"
         tools:layout="@layout/fragment_date_of_birth">
         <argument
             android:name="user"
-            app:argType="com.teme.fakefacebook.models.User" />
+            app:argType="com.teme.fakefacebook.registration.models.User" />
         <action
             android:id="@+id/action_dateOfBirthFragment_to_genderFragment"
             app:destination="@id/genderFragment"
@@ -100,12 +103,12 @@
     </fragment>
     <fragment
         android:id="@+id/genderFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.GenderFragment"
+        android:name="com.teme.fakefacebook.registration.signup.GenderFragment"
         android:label="fragment_gender"
         tools:layout="@layout/fragment_gender">
         <argument
             android:name="user"
-            app:argType="com.teme.fakefacebook.models.User" />
+            app:argType="com.teme.fakefacebook.registration.models.User" />
         <action
             android:id="@+id/action_genderFragment_to_mobileNumberFragment"
             app:destination="@id/mobileNumberFragment"
@@ -125,12 +128,12 @@
     </fragment>
     <fragment
         android:id="@+id/mobileNumberFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.MobileNumberFragment"
+        android:name="com.teme.fakefacebook.registration.signup.MobileNumberFragment"
         android:label="fragment_mobile_number"
         tools:layout="@layout/fragment_mobile_number">
         <argument
             android:name="user"
-            app:argType="com.teme.fakefacebook.models.User" />
+            app:argType="com.teme.fakefacebook.registration.models.User" />
         <action
             android:id="@+id/action_mobileNumberFragment_to_passwordFragment"
             app:destination="@id/passwordFragment"
@@ -157,12 +160,12 @@
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.PasswordFragment"
+        android:name="com.teme.fakefacebook.registration.signup.PasswordFragment"
         android:label="fragment_password"
         tools:layout="@layout/fragment_password">
         <argument
             android:name="user"
-            app:argType="com.teme.fakefacebook.models.User" />
+            app:argType="com.teme.fakefacebook.registration.models.User" />
         <action
             android:id="@+id/action_passwordFragment_to_emailAddressFragment"
             app:destination="@id/emailAddressFragment"
@@ -185,12 +188,12 @@
     </fragment>
     <fragment
         android:id="@+id/emailAddressFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.EmailAddressFragment"
+        android:name="com.teme.fakefacebook.registration.signup.EmailAddressFragment"
         android:label="fragment_email_address"
         tools:layout="@layout/fragment_email_address">
         <argument
             android:name="user"
-            app:argType="com.teme.fakefacebook.models.User" />
+            app:argType="com.teme.fakefacebook.registration.models.User" />
         <action
             android:id="@+id/action_emailAddressFragment_to_termsPrivacyFragment"
             app:destination="@id/termsPrivacyFragment"
@@ -213,12 +216,12 @@
     </fragment>
     <fragment
         android:id="@+id/termsPrivacyFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.TermsPrivacyFragment"
+        android:name="com.teme.fakefacebook.registration.signup.TermsPrivacyFragment"
         android:label="fragment_terms_privacy"
         tools:layout="@layout/fragment_terms_privacy">
         <argument
             android:name="user"
-            app:argType="com.teme.fakefacebook.models.User" />
+            app:argType="com.teme.fakefacebook.registration.models.User" />
         <action
             android:id="@+id/action_termsPrivacyFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -234,12 +237,12 @@
     </fragment>
     <fragment
         android:id="@+id/accountConfirmationFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.AccountConfirmationFragment"
+        android:name="com.teme.fakefacebook.registration.signup.AccountConfirmationFragment"
         android:label="fragment_account_confirmation"
         tools:layout="@layout/fragment_account_confirmation">
         <argument
             android:name="user"
-            app:argType="com.teme.fakefacebook.models.User" />
+            app:argType="com.teme.fakefacebook.registration.models.User" />
         <action
             android:id="@+id/action_accountConfirmationFragment_to_signInFragment"
             app:destination="@id/signInFragment"
@@ -248,7 +251,7 @@
     </fragment>
     <fragment
         android:id="@+id/createAccSplashFragment"
-        android:name="com.teme.fakefacebook.fragments.signup.CreateAccSplashFragment"
+        android:name="com.teme.fakefacebook.registration.signup.CreateAccSplashFragment"
         android:label="fragment_create_acc_splash"
         tools:layout="@layout/fragment_create_acc_splash">
         <action
@@ -258,6 +261,14 @@
             app:popUpToInclusive="false" />
         <argument
             android:name="user"
-            app:argType="com.teme.fakefacebook.models.User" />
+            app:argType="com.teme.fakefacebook.registration.models.User" />
+        <action
+            android:id="@+id/action_createAccSplashFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
     </fragment>
+    <activity
+        android:id="@+id/dashboardActivity"
+        android:name="com.teme.fakefacebook.dashboard.activities.DashboardActivity"
+        android:label="activity_dashboard"
+        tools:layout="@layout/activity_dashboard" />
 </navigation>

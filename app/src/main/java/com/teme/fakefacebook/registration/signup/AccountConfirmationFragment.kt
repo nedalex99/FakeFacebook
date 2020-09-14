@@ -1,4 +1,4 @@
-package com.teme.fakefacebook.fragments.signup
+package com.teme.fakefacebook.registration.signup
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -16,7 +16,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.PhoneAuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import com.teme.fakefacebook.R
-import com.teme.fakefacebook.models.User
+import com.teme.fakefacebook.registration.models.User
 import kotlinx.android.synthetic.main.fragment_account_confirmation.*
 import java.util.concurrent.TimeUnit
 

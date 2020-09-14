@@ -1,4 +1,4 @@
-package com.teme.fakefacebook.fragments.signup
+package com.teme.fakefacebook.registration.signup
 
 import android.os.Bundle
 import android.text.Editable
@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import com.teme.fakefacebook.R
-import com.teme.fakefacebook.models.User
+import com.teme.fakefacebook.registration.models.User
 import kotlinx.android.synthetic.main.fragment_first_last_name.*
 
 class FirstLastNameFragment : Fragment() {
@@ -137,8 +137,8 @@ class FirstLastNameFragment : Fragment() {
     }
 
     private fun goToDateOfBirthFragment() {
-        val action = FirstLastNameFragmentDirections
-            .actionFirstLastNameFragmentToDateOfBirthFragment(user)
+        val action =
+            FirstLastNameFragmentDirections.actionFirstLastNameFragmentToDateOfBirthFragment(user)
         view?.findNavController()
             ?.navigate(action)
 

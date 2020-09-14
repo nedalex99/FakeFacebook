@@ -1,4 +1,4 @@
-package com.teme.fakefacebook.fragments.signup
+package com.teme.fakefacebook.registration.signup
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,7 +10,7 @@ import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
-import com.teme.fakefacebook.models.User
+import com.teme.fakefacebook.registration.models.User
 import kotlinx.android.synthetic.main.fragment_create_acc_splash.*
 
 class CreateAccSplashFragment : Fragment() {
@@ -41,36 +41,13 @@ class CreateAccSplashFragment : Fragment() {
                 if (createUserTask.isSuccessful) {
                     val userId = FirebaseAuth.getInstance().currentUser?.uid
                     addUserToFirestore(userId)
+                    sendEmailConfirmation()
                     //createPhoneAuth()
                 } else {
                     Toast.makeText(context, createUserTask.toString(), Toast.LENGTH_LONG).show()
                 }
             }
     }
-
-   /* private fun createPhoneAuth() {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-            user?.mobileNumber.toString(),
-            60,
-            TimeUnit.SECONDS,
-            requireActivity(),
-            object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                override fun onVerificationCompleted(p0: PhoneAuthCredential) {
-                    //Log.i("Verification completed", p0.smsCode.toString())
-                    p0.smsCode?.let { goToAccountConfirmationFragment(it, p0) }
-                }
-
-                override fun onVerificationFailed(p0: FirebaseException) {
-                    Log.i("Verification failed", p0.message.toString())
-                }
-
-                override fun onCodeSent(p0: String, p1: PhoneAuthProvider.ForceResendingToken) {
-                    //goToAccountConfirmationFragment(p0)
-                }
-
-            }
-        )
-    }*/
 
     private fun addUserToFirestore(userId: String?) {
         userId?.let {
@@ -81,7 +58,8 @@ class CreateAccSplashFragment : Fragment() {
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             progress_bar.visibility = View.GONE
-                            goToAccountConfirmationFragment()
+                            goToSignInFragment()
+                            //goToAccountConfirmationFragment()
                         } else {
                             Toast.makeText(context, it.toString(), Toast.LENGTH_LONG).show()
                         }
@@ -90,12 +68,19 @@ class CreateAccSplashFragment : Fragment() {
         }
     }
 
+    private fun sendEmailConfirmation() {
+        FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
+    }
+
+    private fun goToSignInFragment() {
+        view?.findNavController()?.navigate(R.id.action_createAccSplashFragment_to_signInFragment)
+    }
+
     private fun goToAccountConfirmationFragment() {
         val action = user?.let {
-            CreateAccSplashFragmentDirections
-                .actionCreateAccSplashFragmentToAccountConfirmationFragment(
-                    user = it
-                )
+            CreateAccSplashFragmentDirections.actionCreateAccSplashFragmentToAccountConfirmationFragment(
+                user = it
+            )
         }
         action?.let {
             view?.findNavController()

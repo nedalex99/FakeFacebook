@@ -1,4 +1,4 @@
-package com.teme.fakefacebook.fragments.signup
+package com.teme.fakefacebook.registration.signup
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,7 +9,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import com.teme.fakefacebook.R
-import com.teme.fakefacebook.models.User
+import com.teme.fakefacebook.registration.models.User
 import kotlinx.android.synthetic.main.fragment_gender.*
 import kotlinx.android.synthetic.main.fragment_gender.back_img
 import kotlinx.android.synthetic.main.fragment_gender.error

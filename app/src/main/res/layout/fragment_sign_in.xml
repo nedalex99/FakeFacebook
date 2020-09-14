@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.SignInFragment">
+    tools:context=".registration.signin.SignInFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -50,7 +50,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_55"
                 android:background="@null"
-                android:hint="@string/email"
+                android:hint="@string/email_phone_number"
                 android:imeOptions="actionNext"
                 android:inputType="textEmailAddress"
                 android:paddingStart="@dimen/padding_10"
@@ -123,6 +123,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/password_layout" />
 
+        <TextView
+            android:id="@+id/forgot_pass_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:text="Forgotten password?"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/password_layout" />
+
         <Button
             android:id="@+id/sign_in_btn"
             android:layout_width="@dimen/width_280"
@@ -132,16 +144,15 @@
             android:text="@string/sign_in"
             app:layout_constraintEnd_toEndOf="@id/password_layout"
             app:layout_constraintStart_toStartOf="@id/password_layout"
-            app:layout_constraintTop_toBottomOf="@id/password_layout" />
+            app:layout_constraintTop_toBottomOf="@id/forgot_pass_tv" />
 
-        <TextView
-            android:id="@+id/forgot_pass_tv"
-            android:layout_width="wrap_content"
+        <Button
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Forgotten password?"
-            android:textAllCaps="false"
-            android:textSize="18sp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:text="Mobile Number Sign In"
+            app:layout_constraintBottom_toTopOf="@id/create_new_acc_btn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/sign_in_btn" />
@@ -150,10 +161,10 @@
             android:id="@+id/create_new_acc_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Create New Account"
-            android:textAllCaps="false"
             android:layout_marginStart="@dimen/margin_side_25"
             android:layout_marginEnd="@dimen/margin_side_25"
+            android:text="Create New Account"
+            android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

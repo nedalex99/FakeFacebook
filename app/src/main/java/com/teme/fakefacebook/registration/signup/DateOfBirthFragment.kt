@@ -1,5 +1,6 @@
-package com.teme.fakefacebook.fragments.signup
+package com.teme.fakefacebook.registration.signup
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,14 +9,14 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import com.teme.fakefacebook.R
-import com.teme.fakefacebook.models.User
-import kotlinx.android.synthetic.main.fragment_password.*
-import kotlinx.android.synthetic.main.fragment_password.back_img
-import kotlinx.android.synthetic.main.fragment_password.error
-import kotlinx.android.synthetic.main.fragment_password.next_btn
+import com.teme.fakefacebook.registration.models.User
+import kotlinx.android.synthetic.main.fragment_date_of_birth.*
+import kotlinx.android.synthetic.main.fragment_date_of_birth.back_img
+import kotlinx.android.synthetic.main.fragment_date_of_birth.error
+import java.time.LocalDateTime
 
 
-class PasswordFragment : Fragment() {
+class DateOfBirthFragment : Fragment() {
 
     private var user: User? = null
 
@@ -24,7 +25,7 @@ class PasswordFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_password, container, false)
+        return inflater.inflate(R.layout.fragment_date_of_birth, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,15 +37,16 @@ class PasswordFragment : Fragment() {
     }
 
     private fun setupUI() {
-        next_btn.setOnClickListener {
-            if (password_et.text.isEmpty()) {
+
+        choose_date_btn.setOnClickListener {
+            if (!checkYearChosen()) {
                 showError()
-            } else if (checkPassword()) {
-                hideError()
-                user?.password = password_et.text.toString()
-                goToEmailFragment()
             } else {
-                showError()
+                user?.day = date_picker.dayOfMonth.toString()
+                user?.month = date_picker.month.toString()
+                user?.year = date_picker.year.toString()
+                hideError()
+                goToGenderFragment()
             }
         }
 
@@ -53,35 +55,22 @@ class PasswordFragment : Fragment() {
         }
     }
 
-    private fun checkPassword(): Boolean {
-        val passwordPattern = Regex(
-            "^(?=.*\\d)" +
-                    "(?=.*[a-z])" +
-                    "(?=.*[A-Z])" +
-                    "(?=.*[!@#\$%^&*_+=?;<>,.])" +
-                    "(?=\\S+$)" +
-                    ".{6,14}\$"
-        )
-
-        if (passwordPattern.matches(password_et.text)) {
-            return true
+    private fun checkYearChosen(): Boolean {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val currentDate = LocalDateTime.now()
+            if (currentDate.year - date_picker.year < 5) {
+                return false
+            }
         }
-
-        return false
-
+        return true
     }
 
-    private fun goToEmailFragment() {
-        val action =
-            user?.let {
-                PasswordFragmentDirections.actionPasswordFragmentToEmailAddressFragment(
-                    user = it
-                )
-            }
-
-        action?.let { it1 ->
-            view?.findNavController()?.navigate(it1)
+    private fun goToGenderFragment() {
+        val action = user?.let {
+            DateOfBirthFragmentDirections.actionDateOfBirthFragmentToGenderFragment(user = it)
         }
+
+        action?.let { view?.findNavController()?.navigate(it) }
     }
 
     private fun createAlertDialog() {
@@ -92,7 +81,7 @@ class PasswordFragment : Fragment() {
                 "Stop Creating Account"
             ) { _, _ ->
                 view?.findNavController()
-                    ?.navigate(R.id.action_passwordFragment_to_signInFragment)
+                    ?.navigate(R.id.action_dateOfBirthFragment_to_signInFragment)
             }
             setNegativeButton("Continue Creating Account") { _, _ ->
                 setCancelable(true)
@@ -112,10 +101,10 @@ class PasswordFragment : Fragment() {
 
     private fun getUser(): User? {
         arguments?.let {
-            val args = PasswordFragmentArgs.fromBundle(requireArguments())
+            val args = DateOfBirthFragmentArgs.fromBundle(requireArguments())
             return args.user
+
         }
         return null
     }
-
 }

@@ -1,4 +1,4 @@
-package com.teme.fakefacebook.models
+package com.teme.fakefacebook.registration.models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
