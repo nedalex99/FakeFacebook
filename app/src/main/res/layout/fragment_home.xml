@@ -1,14 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".dashboard.fragments.HomeFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Home" />
+        android:layout_height="match_parent">
 
-</FrameLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/profile_mind_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/profile_pic_img"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_launcher_foreground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/what_is_on_your_mind_tv"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:background="@drawable/what_is_on_your_mind_background"
+                android:foregroundGravity="center"
+                android:padding="10dp"
+                android:paddingStart="20dp"
+                android:text="What's on your mind?"
+                android:textColor="@color/textBlackColor"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/profile_pic_img"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/live_photo_room_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/profile_mind_layout"
+            app:layout_constraintTop_toBottomOf="@id/profile_mind_layout">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Live"
+                android:textAllCaps="false" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Photo"
+                android:textAllCaps="false" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Room"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/separator_line_1"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@color/dark_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/live_photo_room_layout" />
+
+        <LinearLayout
+            android:id="@+id/room_friends_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/separator_line_1">
+
+            <Button
+                android:id="@+id/create_room_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:padding="10dp"
+                android:text="Create room"
+                android:textAllCaps="false" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/friends_room_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:orientation="horizontal" />
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/separator_line_2"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="@color/dark_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/room_friends_layout" />
+
+        <LinearLayout
+            android:id="@+id/story_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/separator_line_2">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/my_story"
+                android:layout_width="70dp"
+                android:layout_height="140dp"
+                android:layout_marginStart="10dp"
+                app:cardCornerRadius="20dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/story_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal" />
+
+        </LinearLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/news_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/story_layout" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

@@ -14,7 +14,6 @@
             android:id="@+id/action_signInFragment_to_signUpFragment"
             app:destination="@id/signUpFragment"
             app:enterAnim="@anim/slide_up"
-            app:exitAnim="@anim/slide_down"
             app:popEnterAnim="@anim/slide_up" />
         <action
             android:id="@+id/action_signInFragment_to_forgotPasswordFragment"
