@@ -29,21 +29,15 @@
         android:label="fragment_sign_up"
         tools:layout="@layout/fragment_sign_up">
         <action
-            android:id="@+id/action_signUpFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@id/sign_in_sign_un_nav"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_signUpFragment_to_firstLastNameFragment"
             app:destination="@id/firstLastNameFragment"
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/action_signUpFragment_to_quitRegistrationDialogFragment"
+            app:destination="@id/quitRegistrationDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/forgotPasswordFragment"
@@ -67,14 +61,8 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_firstLastNameFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@id/sign_in_sign_un_nav"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_firstLastNameFragment_to_quitRegistrationDialogFragment"
+            app:destination="@id/quitRegistrationDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/dateOfBirthFragment"
@@ -92,14 +80,8 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_dateOfBirthFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@id/sign_in_sign_un_nav"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_dateOfBirthFragment_to_quitRegistrationDialogFragment"
+            app:destination="@id/quitRegistrationDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/genderFragment"
@@ -117,14 +99,8 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_genderFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@id/sign_in_sign_un_nav"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_genderFragment_to_quitRegistrationDialogFragment"
+            app:destination="@id/quitRegistrationDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/mobileNumberFragment"
@@ -149,14 +125,8 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_mobileNumberFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@id/sign_in_sign_un_nav"
-            app:popUpToInclusive="true" />
+            android:id="@+id/action_mobileNumberFragment_to_quitRegistrationDialogFragment"
+            app:destination="@id/quitRegistrationDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/passwordFragment"
@@ -174,17 +144,11 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_passwordFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@id/sign_in_sign_un_nav"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_passwordFragment_to_termsPrivacyFragment"
             app:destination="@id/termsPrivacyFragment" />
+        <action
+            android:id="@+id/action_passwordFragment_to_quitRegistrationDialogFragment"
+            app:destination="@id/quitRegistrationDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/emailAddressFragment"
@@ -202,17 +166,11 @@
             app:popEnterAnim="@anim/fade_in"
             app:popExitAnim="@anim/fade_out" />
         <action
-            android:id="@+id/action_emailAddressFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@id/sign_in_sign_un_nav"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_emailAddressFragment_to_passwordFragment2"
             app:destination="@id/passwordFragment" />
+        <action
+            android:id="@+id/action_emailAddressFragment_to_quitRegistrationDialogFragment"
+            app:destination="@id/quitRegistrationDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/termsPrivacyFragment"
@@ -223,17 +181,11 @@
             android:name="user"
             app:argType="com.teme.fakefacebook.registration.models.User" />
         <action
-            android:id="@+id/action_termsPrivacyFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:enterAnim="@anim/fade_in"
-            app:exitAnim="@anim/fade_out"
-            app:popEnterAnim="@anim/fade_in"
-            app:popExitAnim="@anim/fade_out"
-            app:popUpTo="@id/sign_in_sign_un_nav"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_termsPrivacyFragment_to_createAccSplashFragment"
             app:destination="@id/createAccSplashFragment" />
+        <action
+            android:id="@+id/action_termsPrivacyFragment_to_quitRegistrationDialogFragment"
+            app:destination="@id/quitRegistrationDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/accountConfirmationFragment"
@@ -245,9 +197,7 @@
             app:argType="com.teme.fakefacebook.registration.models.User" />
         <action
             android:id="@+id/action_accountConfirmationFragment_to_signInFragment"
-            app:destination="@id/signInFragment"
-            app:popUpTo="@id/sign_in_sign_un_nav"
-            app:popUpToInclusive="false" />
+            app:destination="@id/signInFragment" />
     </fragment>
     <fragment
         android:id="@+id/createAccSplashFragment"
@@ -271,4 +221,15 @@
         android:name="com.teme.fakefacebook.dashboard.activities.DashboardActivity"
         android:label="activity_dashboard"
         tools:layout="@layout/activity_dashboard" />
+    <dialog
+        android:id="@+id/quitRegistrationDialogFragment"
+        android:name="com.teme.fakefacebook.dialogs.QuitRegistrationDialogFragment"
+        android:label="fragment_quit_registration_dialog"
+        tools:layout="@layout/fragment_quit_registration_dialog" >
+        <action
+            android:id="@+id/action_quitRegistrationDialogFragment_to_signInFragment"
+            app:destination="@id/signInFragment"
+            app:popUpTo="@id/sign_in_sign_un_nav"
+            app:popUpToInclusive="true" />
+    </dialog>
 </navigation>

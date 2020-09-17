@@ -51,7 +51,9 @@ class EmailAddressFragment : Fragment() {
         }
 
         back_img.setOnClickListener {
-            createAlertDialog()
+            view?.findNavController()
+                ?.navigate(R.id.action_emailAddressFragment_to_quitRegistrationDialogFragment)
+            //createAlertDialog()
         }
     }
 
@@ -85,7 +87,7 @@ class EmailAddressFragment : Fragment() {
         }
     }
 
-    private fun createAlertDialog() {
+    /*private fun createAlertDialog() {
         activity?.let { it1 -> AlertDialog.Builder(it1) }?.apply {
             setTitle("Do you want to stop creating your account?")
             setMessage("If you stop nou, you'll lose any\n progress you've made.")
@@ -99,7 +101,7 @@ class EmailAddressFragment : Fragment() {
                 setCancelable(true)
             }
         }?.create()?.show()
-    }
+    }*/
 
     private fun getUser(): User? {
         arguments?.let {

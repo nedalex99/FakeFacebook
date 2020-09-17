@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.findNavController
 import com.teme.fakefacebook.R
+import com.teme.fakefacebook.dialogs.QuitRegistrationDialogFragment
 import com.teme.fakefacebook.registration.models.User
 import kotlinx.android.synthetic.main.fragment_first_last_name.*
 
@@ -45,7 +46,8 @@ class FirstLastNameFragment : Fragment() {
         }
 
         back_img.setOnClickListener {
-            createAlertDialog()
+            view?.findNavController()
+                ?.navigate(R.id.action_firstLastNameFragment_to_quitRegistrationDialogFragment)
         }
     }
 
@@ -68,22 +70,6 @@ class FirstLastNameFragment : Fragment() {
                 showError("Your name is not correct")
             }
         }
-    }
-
-    private fun createAlertDialog() {
-        activity?.let { it1 -> AlertDialog.Builder(it1) }?.apply {
-            setTitle("Do you want to stop creating your account?")
-            setMessage("If you stop nou, you'll lose any\n progress you've made.")
-            setPositiveButton(
-                "Stop Creating Account"
-            ) { _, _ ->
-                view?.findNavController()
-                    ?.navigate(R.id.action_firstLastNameFragment_to_signInFragment)
-            }
-            setNegativeButton("Continue Creating Account") { _, _ ->
-                setCancelable(true)
-            }
-        }?.create()?.show()
     }
 
     private fun firstNameTextChanged() {

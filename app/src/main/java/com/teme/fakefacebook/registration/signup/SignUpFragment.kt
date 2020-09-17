@@ -27,7 +27,8 @@ class SignUpFragment : Fragment() {
         }
 
         back_img.setOnClickListener {
-            view.findNavController().navigate(R.id.action_signUpFragment_to_signInFragment)
+            view.findNavController()
+                .navigate(R.id.action_signUpFragment_to_quitRegistrationDialogFragment)
         }
     }
 
