@@ -6,16 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.R
 import com.teme.fakefacebook.registration.models.User
-import kotlinx.android.synthetic.main.fragment_create_acc_splash.*
+import com.teme.fakefacebook.registration.viewmodels.AuthViewModel
 
 class CreateAccSplashFragment : Fragment() {
 
     private var user: User? = null
+
+    private lateinit var viewModel: AuthViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,6 +29,8 @@ class CreateAccSplashFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
+
         user = getUser()
 
         createUserWithEmailAndPassword()
@@ -36,56 +39,31 @@ class CreateAccSplashFragment : Fragment() {
     private fun createUserWithEmailAndPassword() {
         val email = user?.email.toString()
         val password = user?.password.toString()
-        FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener { createUserTask ->
-                if (createUserTask.isSuccessful) {
-                    val userId = FirebaseAuth.getInstance().currentUser?.uid
-                    addUserToFirestore(userId)
+        viewModel.createUserWithEmailAndPassword(email, password)
+        viewModel.createdUserLiveData.observe(viewLifecycleOwner,
+            { firebaseUser ->
+                if (firebaseUser != null) {
                     sendEmailConfirmation()
-                    //createPhoneAuth()
-                } else {
-                    Toast.makeText(context, createUserTask.toString(), Toast.LENGTH_LONG).show()
+                    addUserToFirestore(viewModel.createdUserLiveData.value?.uid)
                 }
-            }
+            })
     }
 
     private fun addUserToFirestore(userId: String?) {
         userId?.let {
             user?.let { it1 ->
-                FirebaseFirestore.getInstance().collection("users")
-                    .document(it)
-                    .set(it1)
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            progress_bar.visibility = View.GONE
-                            goToSignInFragment()
-                            //goToAccountConfirmationFragment()
-                        } else {
-                            Toast.makeText(context, it.toString(), Toast.LENGTH_LONG).show()
-                        }
-                    }
+                viewModel.createUserInFirestore(it1, it)
+                goToSignInFragment()
             }
         }
     }
 
     private fun sendEmailConfirmation() {
-        FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
+        viewModel.sendEmailConfirmation()
     }
 
     private fun goToSignInFragment() {
         view?.findNavController()?.navigate(R.id.action_createAccSplashFragment_to_signInFragment)
-    }
-
-    private fun goToAccountConfirmationFragment() {
-        val action = user?.let {
-            CreateAccSplashFragmentDirections.actionCreateAccSplashFragmentToAccountConfirmationFragment(
-                user = it
-            )
-        }
-        action?.let {
-            view?.findNavController()
-                ?.navigate(it)
-        }
     }
 
     private fun getUser(): User? {
