@@ -10,17 +10,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.teme.fakefacebook.R
 import com.teme.fakefacebook.dashboard.activities.DashboardActivity
+import com.teme.fakefacebook.registration.viewmodels.SignInViewModel
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 
 class SignInFragment : Fragment() {
 
-    companion object {
-        private const val RC_SIGN_IN = 101
-    }
+    private lateinit var viewModel: SignInViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,6 +33,8 @@ class SignInFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProvider(this).get(SignInViewModel::class.java)
 
         sign_in_btn.setOnClickListener {
             signIn()
@@ -50,21 +53,18 @@ class SignInFragment : Fragment() {
     }
 
     private fun signIn() {
-        FirebaseAuth.getInstance().signInWithEmailAndPassword(
-            email_et.text.toString(),
-            password_et.text.toString()
-        ).addOnCompleteListener {
-            if(it.isSuccessful){
-                if (FirebaseAuth.getInstance().currentUser!!.isEmailVerified) {
+        viewModel.signInUser(email_et.text.toString(), password_et.text.toString())
+        viewModel.signedIndUserLiveData.observe(viewLifecycleOwner, { firebaseUser ->
+            if (firebaseUser != null) {
+                if (viewModel.hasEmailVerified()) {
                     goToDashboardActivity()
                 } else {
-                    Toast.makeText(context, "Please verify your email!", Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, "Please verify your email", Toast.LENGTH_LONG).show()
                 }
-            }else{
-                Toast.makeText(context, it.toString(), Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(context, "Login Failed", Toast.LENGTH_LONG).show()
             }
-
-        }
+        })
     }
 
     private fun goToDashboardActivity() {

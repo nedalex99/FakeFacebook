@@ -44,7 +44,6 @@ class CreateAccSplashFragment : Fragment() {
             { firebaseUser ->
                 if (firebaseUser != null) {
                     sendEmailConfirmation()
-                    Toast.makeText(context, "User created!", Toast.LENGTH_LONG).show()
                     addUserToFirestore(viewModel.createdUserLiveData.value?.uid)
                 }
             })

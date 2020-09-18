@@ -1,10 +1,12 @@
 package com.teme.fakefacebook.registration.repository
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.teme.fakefacebook.registration.models.User
+import com.teme.fakefacebook.registration.signin.SignInFragment
 
 class AuthRepository {
 
@@ -42,8 +44,23 @@ class AuthRepository {
         FirebaseAuth.getInstance().currentUser?.sendEmailVerification()
     }
 
-    fun signInUser() {
-
+    fun signIn(email: String, password: String): MutableLiveData<FirebaseUser> {
+        val userSignedInMutableLiveData = MutableLiveData<FirebaseUser>()
+        FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener {
+                if (it.isSuccessful) {
+                    userSignedInMutableLiveData.value = FirebaseAuth.getInstance().currentUser
+                } else {
+                    userSignedInMutableLiveData.value = null
+                }
+            }
+        return userSignedInMutableLiveData
     }
 
+    fun hasEmailVerified(): Boolean {
+        if (FirebaseAuth.getInstance().currentUser?.isEmailVerified!!) {
+            return true
+        }
+        return false
+    }
 }
